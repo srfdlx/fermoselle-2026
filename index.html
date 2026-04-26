@@ -1,0 +1,1708 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Fermoselle · Julio 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper:       oklch(0.97 0.012 78);
+      --paper-2:     oklch(0.94 0.015 75);
+      --paper-3:     oklch(0.91 0.018 72);
+      --ink:         oklch(0.22 0.012 70);
+      --ink-2:       oklch(0.38 0.012 70);
+      --ink-3:       oklch(0.55 0.012 70);
+      --terra:       oklch(0.58 0.14 45);
+      --terra-deep:  oklch(0.48 0.14 42);
+      --olive:       oklch(0.52 0.06 125);
+      --line:        oklch(0.85 0.02 72);
+
+      --serif: "Instrument Serif", "Times New Roman", serif;
+      --sans:  "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono:  "JetBrains Mono", ui-monospace, monospace;
+
+      --radius: 14px;
+      --radius-lg: 22px;
+
+      --stage-pad: 14px;
+    }
+
+    @media (min-width: 520px) {
+      :root { --stage-pad: 20px; }
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--terra); color: var(--paper); }
+
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+    .wrap {
+      padding: 0 var(--stage-pad);
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    /* ---------- Top bar (always visible) ---------- */
+    .topbar {
+      position: sticky; top: 0; left: 0; right: 0;
+      z-index: 40;
+      backdrop-filter: saturate(160%) blur(14px);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      background: color-mix(in oklch, var(--paper) 88%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 54px;
+    }
+    .brand {
+      display: flex; align-items: baseline; gap: 8px;
+      font-family: var(--serif);
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .brand .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--terra); display: inline-block;
+      transform: translateY(-2px);
+    }
+    .brand small {
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+    }
+    .menu-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-2);
+      padding: 8px 10px;
+    }
+    .menu-btn svg { width: 14px; height: 14px; }
+
+    /* ---------- Slide-out menu ---------- */
+    .menu-sheet {
+      position: fixed; inset: 0;
+      background: color-mix(in oklch, var(--ink) 35%, transparent);
+      backdrop-filter: blur(6px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+      z-index: 60;
+    }
+    .menu-sheet.open { opacity: 1; pointer-events: auto; }
+    .menu-panel {
+      position: absolute; top: 0; right: 0;
+      height: 100%; width: min(86vw, 380px);
+      background: var(--paper);
+      border-left: 1px solid var(--line);
+      padding: 24px 22px;
+      transform: translateX(100%);
+      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .menu-sheet.open .menu-panel { transform: translateX(0); }
+    .menu-panel h3 {
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.2em; color: var(--ink-3); margin: 8px 0 14px;
+      font-weight: 500;
+    }
+    .menu-panel a {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid var(--line);
+      font-family: var(--serif); font-size: 26px;
+      color: var(--ink); text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .menu-panel a span.num {
+      font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+      letter-spacing: 0.1em;
+    }
+    .menu-close {
+      align-self: flex-end;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-2);
+      padding: 6px 2px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      padding-top: 48px;
+      padding-bottom: 8px;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px;
+    }
+    .eyebrow .line {
+      flex: 1; height: 1px; background: var(--line);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(56px, 16vw, 160px);
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--terra);
+    }
+    .hero-meta {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 14px;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-2);
+    }
+    .hero-meta .k { color: var(--ink-3); font-size: 9.5px; letter-spacing: 0.18em; margin-bottom: 4px; display: block; }
+    .hero-meta .v { color: var(--ink); font-family: var(--sans); font-size: 14px; letter-spacing: 0; text-transform: none; }
+
+    @media (min-width: 720px) {
+      .hero { padding-top: 72px; padding-bottom: 16px; }
+      .hero-meta { grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .hero-meta > div { padding: 18px 0 18px 18px; border-left: 1px solid var(--line); }
+      .hero-meta > div:first-child { border-left: none; padding-left: 0; }
+    }
+
+    /* ---------- Countdown ---------- */
+    .countdown {
+      margin-top: 40px;
+      padding: 28px 0 8px;
+      border-top: 1px solid var(--line);
+    }
+    .countdown-label {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ink-3);
+      margin-bottom: 22px;
+    }
+    .countdown-label .pulse {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--terra);
+    }
+    .countdown-label .pulse::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--terra);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 color-mix(in oklch, var(--terra) 60%, transparent); }
+      50% { opacity: 0.4; transform: scale(1.35); box-shadow: 0 0 0 8px transparent; }
+    }
+
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .cd-cell {
+      padding: 14px 10px 12px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .cd-cell .num {
+      font-family: var(--serif);
+      font-size: clamp(40px, 12vw, 88px);
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .cd-cell .lbl {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    @media (min-width: 720px) {
+      .cd-cell { padding: 22px 20px 18px; }
+    }
+
+    /* ---------- Section frame ---------- */
+    section.section {
+      padding-top: 72px;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .sec-head {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 28px;
+    }
+    .sec-num {
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--terra);
+    }
+    .sec-title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(38px, 8vw, 68px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .sec-title em { font-style: italic; color: var(--terra); }
+    .sec-lede {
+      max-width: 58ch;
+      color: var(--ink-2);
+      font-size: 16.5px;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    /* ---------- Trip overview (cards) ---------- */
+    .trip-rail {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 720px) { .trip-rail { grid-template-columns: repeat(3, 1fr); } }
+
+    .trip-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      min-height: 140px;
+    }
+    .trip-card .icon {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--terra);
+    }
+    .trip-card .icon svg { width: 22px; height: 22px; }
+    .trip-card .big {
+      font-family: var(--serif); font-size: 30px; line-height: 1.05;
+      letter-spacing: -0.015em; color: var(--ink);
+    }
+    .trip-card .big em { font-style: italic; color: var(--terra); }
+    .trip-card .sub {
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--ink-3);
+    }
+
+    /* ---------- Crew avatars ---------- */
+    .crew {
+      margin-top: 20px;
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+    }
+    .avatars { display: flex; }
+    .avatars .av {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2px solid var(--paper);
+      background: var(--paper-3);
+      margin-left: -8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px; color: var(--ink);
+      font-weight: 500;
+    }
+    .avatars .av:first-child { margin-left: 0; }
+    .avatars .av:nth-child(1){ background: oklch(0.82 0.06 45); }
+    .avatars .av:nth-child(2){ background: oklch(0.84 0.05 125); }
+    .avatars .av:nth-child(3){ background: oklch(0.80 0.06 70); }
+    .avatars .av:nth-child(4){ background: oklch(0.86 0.04 200); }
+    .avatars .av:nth-child(5){ background: oklch(0.82 0.06 20); }
+    .avatars .av:nth-child(6){ background: oklch(0.84 0.05 95); }
+    .avatars .av:nth-child(7){ background: oklch(0.80 0.06 260); }
+    .crew-text {
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-2);
+    }
+
+    /* ---------- Map ---------- */
+    .map-wrap {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      position: relative;
+    }
+    .map-wrap iframe {
+      width: 100%; height: 420px; border: 0; display: block;
+      filter: saturate(0.85) contrast(1.02);
+    }
+    @media (min-width: 720px) { .map-wrap iframe { height: 520px; } }
+    .map-caption {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .map-caption a {
+      color: var(--terra); text-decoration: none;
+    }
+
+    /* ---------- Itinerary ---------- */
+    .days {
+      display: flex; flex-direction: column;
+      border-top: 1px solid var(--line);
+    }
+    .day {
+      border-bottom: 1px solid var(--line);
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (min-width: 720px) {
+      .day { grid-template-columns: 120px 1fr 1fr; gap: 32px; }
+    }
+    .day-date {
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--terra);
+      padding-top: 6px;
+    }
+    .day-date strong {
+      display: block; font-family: var(--serif); font-weight: 400;
+      font-size: 34px; color: var(--ink); letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .day-title {
+      font-family: var(--serif); font-size: 26px; letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+    .day-body {
+      color: var(--ink-2); font-size: 15px; line-height: 1.6;
+      margin-top: 8px;
+      grid-column: 2;
+    }
+    @media (min-width: 720px) {
+      .day-body { margin-top: 0; grid-column: auto; }
+    }
+    .day-chips { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink-2);
+      background: var(--paper);
+    }
+
+    /* ---------- Places grid ---------- */
+    .places {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) { .places { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px) { .places { grid-template-columns: repeat(3, 1fr); } }
+
+    .place {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--paper);
+      display: flex; flex-direction: column;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+    }
+    .place:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px -20px oklch(0.22 0.01 70 / 0.35);
+    }
+    .place-img {
+      aspect-ratio: 4 / 3;
+      position: relative;
+      background: var(--paper-3);
+      display: flex; align-items: flex-end; padding: 12px;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .place-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .place:hover .place-img img { transform: scale(1.05); }
+    .place-img .tag {
+      position: relative; z-index: 1;
+      font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-3);
+      background: color-mix(in oklch, var(--paper) 90%, transparent);
+      padding: 4px 8px; border-radius: 999px;
+      border: 1px solid var(--line);
+      backdrop-filter: blur(4px);
+    }
+    .place-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .place-cat {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--terra);
+    }
+    .place h3 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 26px; line-height: 1.05; letter-spacing: -0.015em;
+      margin: 0;
+    }
+    .place p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+    .place-meta {
+      margin-top: auto; padding-top: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink-3);
+    }
+    .place-meta .stars { color: var(--terra); letter-spacing: 0; font-size: 13px; }
+
+    /* ---------- Filter pills ---------- */
+    .filters {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .pill {
+      flex-shrink: 0;
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--ink-2);
+      transition: all .2s;
+    }
+    .pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    /* ---------- Gallery ---------- */
+    .uploader {
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px 20px;
+      text-align: center;
+      background: var(--paper-2);
+      transition: all .2s;
+    }
+    .uploader.drag { border-color: var(--terra); background: color-mix(in oklch, var(--terra) 8%, var(--paper)); }
+    .uploader .up-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--paper); border: 1px solid var(--line);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 12px; color: var(--terra);
+    }
+    .uploader .up-icon svg { width: 20px; height: 20px; }
+    .uploader h4 {
+      font-family: var(--serif); font-weight: 400; font-size: 24px;
+      margin: 0 0 4px; letter-spacing: -0.01em;
+    }
+    .uploader p {
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 11px 18px;
+      border-radius: 999px;
+      background: var(--ink); color: var(--paper);
+      border: 1px solid var(--ink);
+      transition: transform .15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn.terra  { background: var(--terra); border-color: var(--terra); color: var(--paper); }
+
+    .gallery-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin: 26px 0 14px;
+    }
+    .gallery-head .count {
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--ink-3);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    @media (min-width: 640px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; } }
+    @media (min-width: 960px) { .gallery-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; } }
+
+    .g-item {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--paper-3);
+      position: relative;
+      cursor: zoom-in;
+    }
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .g-item:hover img { transform: scale(1.06); }
+    .g-item .caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 8px 10px;
+      background: linear-gradient(to top, oklch(0.22 0.01 70 / 0.6), transparent);
+      color: var(--paper);
+      font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      opacity: 0; transition: opacity .2s;
+    }
+    .g-item:hover .caption { opacity: 1; }
+
+    .g-empty {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--ink-3);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed; inset: 0;
+      background: oklch(0.12 0.005 70);
+      z-index: 90;
+      display: none;
+      flex-direction: column;
+    }
+    .lightbox.open { display: flex; }
+    .lb-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      color: color-mix(in oklch, var(--paper) 80%, transparent);
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .lb-bar .lb-actions { display: flex; gap: 6px; }
+    .lb-btn {
+      padding: 9px 11px;
+      border: 1px solid color-mix(in oklch, var(--paper) 18%, transparent);
+      border-radius: 999px;
+      color: color-mix(in oklch, var(--paper) 80%, transparent);
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent;
+      transition: background .15s, color .15s;
+    }
+    .lb-btn:hover { background: color-mix(in oklch, var(--paper) 10%, transparent); color: var(--paper); }
+    .lb-btn svg { width: 13px; height: 13px; }
+    .lb-stage {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      position: relative;
+      padding: 0 8px 14px;
+      overflow: hidden;
+    }
+    .lb-stage img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px -10px oklch(0 0 0 / 0.4);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .lb-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: color-mix(in oklch, var(--paper) 14%, transparent);
+      color: var(--paper);
+      display: inline-flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid color-mix(in oklch, var(--paper) 18%, transparent);
+    }
+    .lb-nav.prev { left: 14px; }
+    .lb-nav.next { right: 14px; }
+    .lb-nav svg { width: 18px; height: 18px; }
+    .lb-caption {
+      padding: 10px 20px 20px;
+      color: color-mix(in oklch, var(--paper) 80%, transparent);
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* ---------- Toast ---------- */
+    .toast {
+      position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 24px);
+      background: var(--ink); color: var(--paper);
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 12px 18px; border-radius: 999px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 200;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- Share sheet ---------- */
+    .share-sheet {
+      position: fixed; inset: 0;
+      background: oklch(0.15 0.005 70 / 0.55);
+      backdrop-filter: blur(8px);
+      z-index: 120;
+      display: none;
+      align-items: flex-end; justify-content: center;
+    }
+    .share-sheet.open { display: flex; animation: fadeIn .2s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .share-panel {
+      width: 100%; max-width: 480px;
+      background: var(--paper);
+      border-top-left-radius: 22px; border-top-right-radius: 22px;
+      padding: 22px 22px 28px;
+      animation: slideUp .3s cubic-bezier(.2,.8,.2,1);
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @media (min-width: 720px) {
+      .share-sheet { align-items: center; }
+      .share-panel { border-radius: 22px; }
+    }
+    .share-panel h3 {
+      font-family: var(--serif); font-weight: 400; font-size: 28px;
+      margin: 0 0 4px; letter-spacing: -0.015em;
+    }
+    .share-panel .share-hint {
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-3);
+      margin: 0 0 18px;
+    }
+    .share-panel label {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--ink-3);
+      display: block; margin-bottom: 6px;
+    }
+    .share-panel input, .share-panel textarea {
+      width: 100%;
+      font-family: var(--sans); font-size: 15px;
+      padding: 12px 14px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink);
+      margin-bottom: 14px;
+      resize: none;
+    }
+    .share-panel textarea { min-height: 80px; }
+    .share-panel input:focus, .share-panel textarea:focus { outline: none; border-color: var(--terra); }
+    .share-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* ---------- Info Modal ---------- */
+    .info-modal {
+      position: fixed; inset: 0;
+      background: oklch(0.12 0.005 70 / 0.68);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 110;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    .info-modal.open { display: flex; animation: fadeIn .22s ease; }
+    .im-panel {
+      width: 100%;
+      max-width: 540px;
+      background: var(--paper);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      max-height: 92vh;
+      display: flex; flex-direction: column;
+      animation: slideUp .32s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 -20px 60px -10px oklch(0 0 0 / 0.35);
+    }
+    @media (min-width: 720px) {
+      .info-modal { align-items: center; padding: 24px; }
+      .im-panel { border-radius: 24px; max-height: 86vh; }
+    }
+    .im-close {
+      position: absolute; top: 14px; right: 14px;
+      z-index: 5;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: color-mix(in oklch, var(--paper) 82%, transparent);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--ink);
+    }
+    .im-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--paper-3);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .im-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .im-body {
+      padding: 22px 22px 26px;
+      overflow-y: auto;
+    }
+    .im-meta {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--ink-3);
+      margin-bottom: 8px;
+    }
+    .im-cat { color: var(--terra); }
+    .im-dot { opacity: 0.5; }
+    .im-title {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 34px; line-height: 1.05; letter-spacing: -0.02em;
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+    @media (min-width: 720px) { .im-title { font-size: 40px; } }
+    .im-desc {
+      color: var(--ink-2);
+      font-size: 15.5px;
+      line-height: 1.65;
+      margin: 0 0 22px;
+    }
+    .im-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .im-rating {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+
+    footer.foot {
+      margin-top: 64px;
+      padding-top: 36px;
+      padding-bottom: 48px;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    @media (min-width: 720px) {
+      footer.foot { flex-direction: row; justify-content: space-between; align-items: baseline; }
+    }
+    .foot .mark {
+      font-family: var(--serif); font-size: 20px; letter-spacing: -0.01em;
+      color: var(--ink); text-transform: none;
+    }
+
+    /* ---------- Back to top ---------- */
+    .back-to-top {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin: 56px auto 0;
+      padding: 14px 22px 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-2);
+      text-decoration: none;
+      background: var(--paper);
+      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+      width: max-content;
+    }
+    .back-to-top:hover {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+      transform: translateY(-2px);
+    }
+    .back-to-top svg {
+      width: 14px; height: 14px;
+      transition: transform .2s ease;
+    }
+    .back-to-top:hover svg { transform: translateY(-2px); }
+    .back-to-top-wrap {
+      display: flex; justify-content: center;
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <span id="top" aria-hidden="true" style="position:absolute;top:0;left:0;width:0;height:0;"></span>
+
+  <!-- =========================== TOP BAR =========================== -->
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand"><span class="dot"></span> Fermoselle <small>· JUL 2026</small></div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menü öffnen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        Index
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================== MENU SHEET =========================== -->
+  <div class="menu-sheet" id="menuSheet">
+    <div class="menu-panel" onclick="event.stopPropagation()">
+      <button class="menu-close" id="menuClose">Schliessen ×</button>
+      <h3>Navigation</h3>
+      <a href="#countdown" data-nav><span>Countdown</span><span class="num">01</span></a>
+      <a href="#reise" data-nav><span>Die Reise</span><span class="num">02</span></a>
+      <a href="#karte" data-nav><span>Karte</span><span class="num">03</span></a>
+      <a href="#plan" data-nav><span>Tagesplan</span><span class="num">04</span></a>
+      <a href="#orte" data-nav><span>Orte &amp; Ausflüge</span><span class="num">05</span></a>
+      <a href="#essen" data-nav><span>Restaurants</span><span class="num">06</span></a>
+      <a href="#galerie" data-nav><span>Galerie</span><span class="num">07</span></a>
+    </div>
+  </div>
+
+  <!-- =========================== HERO =========================== -->
+  <header class="hero wrap">
+    <div class="eyebrow">
+      <span>Siete amigos · Una semana</span>
+      <span class="line"></span>
+      <span>11 – 18 · 07 · 2026</span>
+    </div>
+    <h1>Fermoselle<em>2026</em></h1>
+    <div class="hero-meta">
+      <div>
+        <span class="k">Destino</span>
+        <span class="v">Fermoselle, Zamora — Castilla y León</span>
+      </div>
+      <div>
+        <span class="k">Ruta</span>
+        <span class="v">ZRH → MAD → Fermoselle</span>
+      </div>
+      <div>
+        <span class="k">Crew</span>
+        <span class="v">7 Freunde, 1 Mietauto · Casa Garrido</span>
+      </div>
+      <div>
+        <span class="k">Dauer</span>
+        <span class="v">8 Tage · 7 Nächte</span>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+      <div class="countdown-label">
+        <span>Abflug Zürich · 11.07 · 13:30</span>
+        <span class="pulse" id="cdStatus">Live</span>
+      </div>
+      <div class="cd-grid" id="cdGrid">
+        <div class="cd-cell"><div class="num" id="cdD">—</div><div class="lbl">Tage</div></div>
+        <div class="cd-cell"><div class="num" id="cdH">—</div><div class="lbl">Stunden</div></div>
+        <div class="cd-cell"><div class="num" id="cdM">—</div><div class="lbl">Minuten</div></div>
+        <div class="cd-cell"><div class="num" id="cdS">—</div><div class="lbl">Sekunden</div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================== REISE =========================== -->
+  <section class="section wrap" id="reise">
+    <div class="sec-head">
+      <span class="sec-num">02 · La Expedición</span>
+      <h2 class="sec-title">Sieben Freunde,<br>eine Woche <em>im Duero-Tal</em>.</h2>
+      <p class="sec-lede">
+        Am Samstag, 11. Juli 2026, heben wir um 13:30 ab Zürich nach Madrid ab. Von Barajas übernehmen wir unseren Mietwagen und
+        fahren rund drei Stunden gegen Nordwest — durch Sonnenblumenfelder und Eichenhaine — bis ins Grenzdorf
+        Fermoselle, wo uns die <em>Casa Garrido</em> eine Woche lang beherbergt. Rückflug am 18.07 um 17:10 ab Madrid.
+      </p>
+    </div>
+
+    <div class="trip-rail">
+      <div class="trip-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 16l20-6-7-4-3 2-4-1-3 2 2 2-5 2z"/><path d="M4 20h16"/></svg>
+        </span>
+        <div class="big"><em>Flug</em> ZRH → MAD</div>
+        <div class="sub">Hin 11.07 · 13:30 → Rück 18.07 · 17:10</div>
+      </div>
+      <div class="trip-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13l2-5a2 2 0 012-1h10a2 2 0 012 1l2 5"/><rect x="3" y="13" width="18" height="6" rx="2"/><circle cx="7" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+        </span>
+        <div class="big"><em>Auto</em> MAD → Fermoselle</div>
+        <div class="sub">1 Mietwagen · ~360 km · 3h 30m</div>
+      </div>
+      <div class="trip-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21v-8a4 4 0 014-4h10a4 4 0 014 4v8"/><path d="M3 21h18"/><path d="M8 9V5a4 4 0 018 0v4"/></svg>
+        </span>
+        <div class="big"><em>Casa</em> Garrido</div>
+        <div class="sub">7 Nächte · Pool · Dorfkern</div>
+      </div>
+    </div>
+
+    <div class="crew">
+      <div class="avatars" aria-hidden="true">
+        <span class="av">A</span><span class="av">B</span><span class="av">C</span><span class="av">D</span>
+        <span class="av">E</span><span class="av">F</span><span class="av">G</span>
+      </div>
+      <div class="crew-text">La cuadrilla · 7 Pax</div>
+    </div>
+  </section>
+
+  <!-- =========================== MAP =========================== -->
+  <section class="section wrap" id="karte">
+    <div class="sec-head">
+      <span class="sec-num">03 · Geografía</span>
+      <h2 class="sec-title">Wo genau ist <em>Fermoselle</em>?</h2>
+      <p class="sec-lede">
+        Ein Granitnest im äussersten Westen Kastiliens, direkt an der portugiesischen Grenze, in den Schluchten des
+        Naturparks <em>Arribes del Duero</em>. Zamora liegt eine Stunde östlich, Salamanca eine Stunde südlich.
+      </p>
+    </div>
+
+    <div class="map-wrap">
+      <iframe
+        title="Karte Fermoselle"
+        src="https://www.google.com/maps?q=Fermoselle,Zamora,Spain&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+      <div class="map-caption">
+        <span>41.31° N · 6.40° W · 727 m</span>
+        <a href="https://www.google.com/maps/dir/Madrid-Barajas+Airport/Fermoselle,+Zamora,+Spain" target="_blank" rel="noopener">Route in Google Maps öffnen →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== ITINERARY =========================== -->
+  <section class="section wrap" id="plan">
+    <div class="sec-head">
+      <span class="sec-num">04 · Itinerario</span>
+      <h2 class="sec-title">Der <em>Plan</em>, grob.</h2>
+      <p class="sec-lede">
+        Ein flexibles Gerüst — genug Luft für lange Mittagessen, spontane Siesta und die eine oder andere
+        Flaschen-Weinverkostung, die sich bis Sonnenuntergang zieht.
+      </p>
+    </div>
+
+    <div class="days">
+      <div class="day">
+        <div class="day-date">Sa<strong>11</strong>Jul</div>
+        <div>
+          <div class="day-title">Anreise · Zürich → Fermoselle</div>
+          <div class="day-chips"><span class="chip">Flug</span><span class="chip">Mietauto</span><span class="chip">Check-in</span></div>
+        </div>
+        <div class="day-body">Treffpunkt ZRH ca. 11:30. Abflug 13:30, Landung Madrid-Barajas gegen 15:45 Ortszeit. Mietwagen abholen, Fahrt nach Fermoselle (~3.5 h). Ankunft in der Casa Garrido gegen 20:00, Willkommensabend im Dorf.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">So<strong>12</strong>Jul</div>
+        <div>
+          <div class="day-title">Arribes del Duero · Bootsfahrt</div>
+          <div class="day-chips"><span class="chip">Natur</span><span class="chip">Boat</span><span class="chip">Easy day</span></div>
+        </div>
+        <div class="day-body">Eingewöhnung im Dorf, Vormittag am Pool, Nachmittags Bootsfahrt durch die Canyons des Duero ab Miranda do Douro (PT).</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Mo<strong>13</strong>Jul</div>
+        <div>
+          <div class="day-title">Zamora · Románico Day</div>
+          <div class="day-chips"><span class="chip">Kultur</span><span class="chip">Kathedrale</span><span class="chip">Tapas</span></div>
+        </div>
+        <div class="day-body">Ausflug nach Zamora (~1h), romanische Kathedrale, Burgruine, Tapas-Crawl in der Calle de los Herreros am Abend.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Di<strong>14</strong>Jul</div>
+        <div>
+          <div class="day-title">Bodegas subterráneas · WM-Halbfinale 1</div>
+          <div class="day-chips"><span class="chip">Wein</span><span class="chip">Verkostung</span><span class="chip">Fussball 21:00</span></div>
+        </div>
+        <div class="day-body">Besuch einer der unterirdischen Bodegas in Fermoselle — das Dorf hat über 1.000 davon. Verkostung am späten Nachmittag, danach <strong>WM-Halbfinale</strong> live aus Arlington (AT&amp;T Stadium) — Anstoss <strong>21:00 CEST</strong>. Beamer auf der Terrasse, Bodega-Wein im Glas.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Mi<strong>15</strong>Jul</div>
+        <div>
+          <div class="day-title">Salamanca · WM-Halbfinale 2</div>
+          <div class="day-chips"><span class="chip">Architektur</span><span class="chip">Plaza Mayor</span><span class="chip">Fussball 21:00</span></div>
+        </div>
+        <div class="day-body">Tag in Salamanca (~1h 15m): Plaza Mayor, Universität, Catedrales. Rückkehr früh genug fürs <strong>zweite WM-Halbfinale</strong> aus Atlanta (Mercedes-Benz Stadium) — Anstoss <strong>21:00 CEST</strong>. Alternativ Public Viewing in einer Bar an der Plaza Mayor — Spanien spielt vielleicht selber mit.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Do<strong>16</strong>Jul</div>
+        <div>
+          <div class="day-title">Mirador · Wanderung</div>
+          <div class="day-chips"><span class="chip">Hike</span><span class="chip">Sunset</span></div>
+        </div>
+        <div class="day-body">Morgens Wanderung zum Mirador de Las Barrancas, picknicken hoch über dem Duero, Nachmittag Pool &amp; Siesta.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Fr<strong>17</strong>Jul</div>
+        <div>
+          <div class="day-title">Lago de Sanabria oder Free Day</div>
+          <div class="day-chips"><span class="chip">Optional</span><span class="chip">Bad</span><span class="chip">Abschiedsessen</span></div>
+        </div>
+        <div class="day-body">Tag zur freien Verfügung — Lago de Sanabria für Baden, oder gemütlich im Dorf. Abendessen als Gruppe zum Abschluss.</div>
+      </div>
+      <div class="day">
+        <div class="day-date">Sa<strong>18</strong>Jul</div>
+        <div>
+          <div class="day-title">Rückreise · Fermoselle → Zürich</div>
+          <div class="day-chips"><span class="chip">Checkout</span><span class="chip">Flug</span></div>
+        </div>
+        <div class="day-body">Check-out in der Casa Garrido bis ca. 10:00, Fahrt zurück nach Madrid, Mietwagen zurückgeben. Abflug Madrid 17:10, Landung Zürich am frühen Abend.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== PLACES =========================== -->
+  <section class="section wrap" id="orte">
+    <div class="sec-head">
+      <span class="sec-num">05 · Lugares</span>
+      <h2 class="sec-title">Orte &amp; <em>Ausflüge</em>.</h2>
+      <p class="sec-lede">
+        Eine handverlesene Liste aus Klassikern, Naturzielen und ein paar weniger offensichtlichen Stopps.
+      </p>
+    </div>
+
+    <div class="filters" id="placeFilters">
+      <button class="pill active" data-cat="all">Alles</button>
+      <button class="pill" data-cat="nature">Natur</button>
+      <button class="pill" data-cat="culture">Kultur</button>
+      <button class="pill" data-cat="village">Dorf</button>
+      <button class="pill" data-cat="city">Städte</button>
+    </div>
+
+    <div class="places" id="placesGrid">
+      <!-- populated by JS -->
+    </div>
+    <p style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 16px;">Vorschaubilder · Unsplash (editorial)</p>
+  </section>
+
+  <!-- =========================== FOOD =========================== -->
+  <section class="section wrap" id="essen">
+    <div class="sec-head">
+      <span class="sec-num">06 · Mesa</span>
+      <h2 class="sec-title">Wo wir <em>essen</em>.</h2>
+      <p class="sec-lede">
+        Rustikale Bodega-Küche, regionale Spezialitäten (Lechazo, Queso Zamorano, Arribes-Weine) und ein paar Tipps
+        in Zamora und Salamanca.
+      </p>
+    </div>
+
+    <div class="places" id="foodGrid">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+  <!-- =========================== GALLERY =========================== -->
+  <section class="section wrap" id="galerie">
+    <div class="sec-head">
+      <span class="sec-num">07 · Fotos</span>
+      <h2 class="sec-title">Die <em>Galerie</em>.</h2>
+      <p class="sec-lede">
+        Lädt eure Bilder hoch. Alles bleibt lokal im Browser gespeichert (Demo-Modus). Zum Teilen gibt es einen
+        Mail-Button direkt am Bild.
+      </p>
+    </div>
+
+    <div class="uploader" id="uploader">
+      <div class="up-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/>
+        </svg>
+      </div>
+      <h4>Bilder hochladen</h4>
+      <p>Tippen, ziehen oder auswählen</p>
+      <button class="btn terra" id="pickBtn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Fotos auswählen
+      </button>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+
+    <div class="gallery-head">
+      <h3 style="font-family: var(--serif); font-weight: 400; font-size: 28px; letter-spacing: -0.015em; margin: 0;">Galería</h3>
+      <div class="count"><span id="galleryCount">0</span> Bilder · <button id="clearBtn" style="color: var(--terra); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;">Leeren</button></div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="g-empty" id="galleryEmpty" style="grid-column: 1 / -1;">Noch keine Bilder · ¡Adelante!</div>
+    </div>
+  </section>
+
+  <div class="back-to-top-wrap wrap">
+    <a href="#top" class="back-to-top" id="backToTop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      Nach oben
+    </a>
+  </div>
+
+  <footer class="foot wrap">
+    <div class="mark">Fermoselle 2026</div>
+    <div>Siete amigos · Made with care · ZRH ⇄ MAD</div>
+  </footer>
+
+  <!-- =========================== LIGHTBOX =========================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <div class="lb-bar">
+      <span id="lbCounter">1 / 1</span>
+      <div class="lb-actions">
+        <button class="lb-btn" id="lbShare" title="Per E-Mail teilen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+          Mail
+        </button>
+        <button class="lb-btn" id="lbDownload" title="Herunterladen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg>
+          Save
+        </button>
+        <button class="lb-btn" id="lbClose" title="Schliessen">Schliessen ×</button>
+      </div>
+    </div>
+    <div class="lb-stage">
+      <button class="lb-nav prev" id="lbPrev" aria-label="Vorheriges">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <img id="lbImg" alt="" />
+      <button class="lb-nav next" id="lbNext" aria-label="Nächstes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <!-- =========================== SHARE SHEET =========================== -->
+  <div class="share-sheet" id="shareSheet">
+    <div class="share-panel" onclick="event.stopPropagation()">
+      <h3>Foto per Mail teilen</h3>
+      <p class="share-hint">Öffnet deinen Mail-Client mit einem Download-Link zum Bild.</p>
+      <label for="shareTo">An</label>
+      <input id="shareTo" type="email" placeholder="freund@mail.com" />
+      <label for="shareMsg">Nachricht</label>
+      <textarea id="shareMsg" placeholder="Ein kleiner Gruss aus Fermoselle..."></textarea>
+      <div class="share-actions">
+        <button class="btn ghost" id="shareCancel">Abbrechen</button>
+        <button class="btn" id="shareSend">Mail öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================== TOAST =========================== -->
+  <div class="toast" id="toast">Kopiert</div>
+
+  <!-- =========================== INFO MODAL =========================== -->
+  <div class="info-modal" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="imTitle">
+    <div class="im-panel" onclick="event.stopPropagation()">
+      <button class="im-close" id="imClose" aria-label="Schliessen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="im-img-wrap">
+        <img id="imImg" alt="" />
+      </div>
+      <div class="im-body">
+        <div class="im-meta">
+          <span class="im-cat" id="imCat">Pueblo</span>
+          <span class="im-dot">·</span>
+          <span class="im-tag" id="imTag">Fermoselle</span>
+        </div>
+        <h3 class="im-title" id="imTitle">Title</h3>
+        <p class="im-desc" id="imDesc">Description</p>
+        <div class="im-footer">
+          <div class="im-rating">
+            <span class="stars" id="imStars" style="color: var(--terra); font-size: 14px;">★★★★★</span>
+            <span id="imRating" style="font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);">4.8 · Google</span>
+          </div>
+          <a id="imMaps" class="btn" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7.5 7-13a7 7 0 10-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            In Maps öffnen
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ============================ DATA ============================ */
+  const PLACES = [
+    { cat: 'village', name: 'Casco Histórico Fermoselle', tag: 'Dorf · 2 Min zu Fuss', stars: 4.7,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Fermoselle_Vista_20080908_814_retouched.jpg/1280px-Fermoselle_Vista_20080908_814_retouched.jpg',
+      desc: 'Verwinkelte Gassen aus Granit, Miradores mit Blick über den Duero-Canyon, mehr als 1.000 unterirdische Bodegas unter dem Dorf. Das Dorf steht seit 1974 unter Denkmalschutz als Conjunto Histórico-Artístico und gilt als eine der besterhaltenen Siedlungen der Region.' },
+    { cat: 'nature', name: 'Mirador del Torozo', tag: 'Aussicht · 10 Min', stars: 4.8,
+      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Arribes%20del%20Duero%20vistos%20desde%20Aldead%C3%A1vila.JPG?width=1000',
+      desc: 'Einer der spektakulärsten Aussichtspunkte im Parque Natural Arribes del Duero. Der Duero schneidet hier eine 400 m tiefe Schlucht in das Granitmassiv, die natürliche Grenze zu Portugal bildet. Besonders zum Sonnenuntergang.' },
+    { cat: 'nature', name: 'Mirador de Las Barrancas', tag: 'Aussicht · 15 Min', stars: 4.7,
+      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Arribes%20del%20Duero.JPG?width=1000',
+      desc: 'Senkrechte Granitwände fallen 400 m in den Fluss. Kurzer Spaziergang vom Parkplatz, Picknick-tauglich. Ein Lieblingsplatz von Ornithologen — mit etwas Glück sieht man Gänsegeier, Schmutzgeier und den seltenen Habichtsadler ziehen.' },
+    { cat: 'nature', name: 'Bootsfahrt Arribes del Duero', tag: 'Tour · 40 Min Fahrt', stars: 4.8,
+      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Embalse%20en%20los%20Arribes%20del%20Duero.JPG?width=1000',
+      desc: 'Leise Elektro-Boote gleiten durch die engste Stelle des internationalen Duero-Canyons. Start in Miranda do Douro (PT), ca. 1h 45. Wasserfälle, Felsnester und totale Stille zwischen zwei Ländern.' },
+    { cat: 'culture', name: 'Catedral de Zamora', tag: 'Zamora · 1h', stars: 4.7,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Catedral.001_-_Zamora.jpg/1280px-Catedral.001_-_Zamora.jpg',
+      desc: 'Romanisch, 12. Jh., mit markanter byzantinisch anmutender Schuppenkuppel. Direkt an der Stadtmauer über dem Duero, neben Burgruine und der legendären Puente de Piedra. Im Inneren: flämische Wandteppiche aus dem 15. Jh.' },
+    { cat: 'city', name: 'Salamanca · Plaza Mayor', tag: 'Salamanca · 1h 15', stars: 4.9,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Plaza_Mayor%2C_Salamanca_-_at_night.jpg/1280px-Plaza_Mayor%2C_Salamanca_-_at_night.jpg',
+      desc: 'Einer der schönsten Barock-Plätze Europas, von Alberto de Churriguera ab 1729 geplant. Besonders magisch bei Nacht mit goldener Beleuchtung — der Sandstein der Fassaden glüht wie Honig.' },
+    { cat: 'city', name: 'Universidad de Salamanca', tag: 'Salamanca · 1h 15', stars: 4.8,
+      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Fachada%20Universidad%20Salamanca.jpg?width=1000',
+      desc: 'Die älteste Universität Spaniens (gegründet 1218). Die plateresque Fassade aus dem 16. Jh. ist so filigran wie Spitzenstickerei — versteckt darin: der berühmte Frosch auf einem Totenschädel (wer ihn findet, bringt Glück).' },
+    { cat: 'nature', name: 'Lago de Sanabria', tag: 'See · 2h Fahrt', stars: 4.6,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Vista_de_el_Lago_de_Sanabria.jpg/1280px-Vista_de_el_Lago_de_Sanabria.jpg',
+      desc: 'Grösster natürlicher Gletschersee der Iberischen Halbinsel, 1.000 m hoch in den Sanabria-Bergen. Kristallklares Wasser, kleine Sandstrände, Wanderwege rund um das Kloster San Martín. Perfekter Tagesausflug wenn es heiss wird.' },
+    { cat: 'village', name: 'Miranda do Douro (PT)', tag: 'Portugal · 30 Min', stars: 4.5,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Miranda_do_Douro_-_panoramio_%283%29.jpg/1280px-Miranda_do_Douro_-_panoramio_%283%29.jpg',
+      desc: 'Grenzdorf gegenüber, Zeitumstellung 1h zurück. Mittelalterliche Altstadt mit Kathedrale, die berühmten Pauliteiros-Stocktänzer, Mandel-Gebäck und Ausgangspunkt vieler Flussfahrten. Tipp: Posta Mirandesa zum Mittagessen.' }
+  ];
+
+  const FOODS = [
+    { cat: 'food', name: 'Restaurante Posada Doña Urraca', tag: 'Fermoselle · Dorf', stars: 4.6,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Meson_Castellano_Asador_Rafael_Corrales_Aranda_de_Duero_Lechazo_Asado.JPG/1280px-Meson_Castellano_Asador_Rafael_Corrales_Aranda_de_Duero_Lechazo_Asado.JPG',
+      desc: 'Gehobene traditionelle Küche in der Posada, Lechazo aus dem Holzofen (Spezialität Kastiliens), starke Weinkarte aus den Arribes. Reservierung empfohlen — Dorf-Restaurant, aber auf sehr hohem Niveau.' },
+    { cat: 'food', name: 'Tapería Guayente', tag: 'Fermoselle · Zentrum', stars: 4.5,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Tapas_Tortilla_espa%C3%B1ola.jpg/1280px-Tapas_Tortilla_espa%C3%B1ola.jpg',
+      desc: 'Locker, laut, gut. Rabo de Toro (geschmortes Ochsenschwanz), gegrillter Pulpo, Queso Zamorano — alles mit regionalen Weinen im offenen Glas. Gute Anlaufstelle nach dem Pool-Nachmittag.' },
+    { cat: 'food', name: 'El Rincón de Antonio', tag: 'Zamora · 1 Michelin-Empfehlung', stars: 4.7,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Lechazo_Asado_-_Cordero_Asado_Asador_Rafael_Corrales_Aranda_de_Duero.JPG/1280px-Lechazo_Asado_-_Cordero_Asado_Asador_Rafael_Corrales_Aranda_de_Duero.JPG',
+      desc: 'Eine der besten Adressen in Zamora, moderne Interpretation regionaler Klassiker. Degustationsmenü lohnt sich. Unbedingt reservieren.' },
+    { cat: 'food', name: 'La Taberna del Hidalgo', tag: 'Zamora · Calle Herreros', stars: 4.5,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Pincho_moruno-Valladolid.jpg/1280px-Pincho_moruno-Valladolid.jpg',
+      desc: 'Klassische Tapas-Bar an der legendären Calle de los Herreros — die dichteste Tapas-Strasse der Stadt, abends Tür an Tür mit 20 anderen Lokalen. Ideal für einen tapas-crawl.' },
+    { cat: 'food', name: 'Tapas 3.0', tag: 'Salamanca · Altstadt', stars: 4.6,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Logro%C3%B1o_2023_-_Pincho_Moruno.jpg/1280px-Logro%C3%B1o_2023_-_Pincho_Moruno.jpg',
+      desc: 'Kreative, bezahlbare Tapas zwei Gehminuten von der Plaza Mayor. Perfekter Mittagsstopp zwischen Universität und Catedral Vieja.' },
+    { cat: 'food', name: 'Bodega Fermoselle', tag: 'Fermoselle · underground', stars: 4.8,
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Ostras_espa%C3%B1olas_%28MM%29.jpg/1280px-Ostras_espa%C3%B1olas_%28MM%29.jpg',
+      desc: 'Verkostung direkt in einer unterirdischen Bodega aus dem 16. Jh. — von den über 1.000 Kellern, die das ganze Dorf untertunneln. Wein, Käse, Jamón — der Fermoselle-Klassiker.' }
+  ];
+
+  /* ============================ STATE ============================ */
+  const state = {
+    photos: [],     // { id, name, url, ts }
+    lbIdx: 0,
+    filter: 'all',
+  };
+
+  /* ============================ UTILS ============================ */
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const pad = n => String(n).padStart(2, '0');
+
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  /* ============================ COUNTDOWN ============================ */
+  // 11 July 2026, 13:30 CEST (UTC+2) → 11:30 UTC
+  const TARGET = new Date('2026-07-11T11:30:00Z');
+  function tickCountdown() {
+    const now = new Date();
+    let diff = Math.max(0, TARGET - now);
+    if (diff === 0) {
+      $('#cdStatus').textContent = '¡Vamos!';
+      $('#cdD').textContent = $('#cdH').textContent = $('#cdM').textContent = $('#cdS').textContent = '00';
+      return;
+    }
+    const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+    const h = Math.floor(diff / 3600000);  diff -= h * 3600000;
+    const m = Math.floor(diff / 60000);    diff -= m * 60000;
+    const s = Math.floor(diff / 1000);
+    $('#cdD').textContent = pad(d);
+    $('#cdH').textContent = pad(h);
+    $('#cdM').textContent = pad(m);
+    $('#cdS').textContent = pad(s);
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+
+  /* ============================ MENU ============================ */
+  const menuSheet = $('#menuSheet');
+  $('#menuBtn').addEventListener('click', () => menuSheet.classList.add('open'));
+  $('#menuClose').addEventListener('click', () => menuSheet.classList.remove('open'));
+  menuSheet.addEventListener('click', e => { if (e.target === menuSheet) menuSheet.classList.remove('open'); });
+  $$('#menuSheet [data-nav]').forEach(a => a.addEventListener('click', () => menuSheet.classList.remove('open')));
+
+  /* ============================ BACK TO TOP ============================ */
+  $('#backToTop')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (history.replaceState) history.replaceState(null, '', window.location.pathname + window.location.search);
+  });
+
+  /* ============================ PLACES ============================ */
+  function starRow(n) {
+    const full = Math.round(n);
+    return '★'.repeat(full) + '☆'.repeat(5 - full);
+  }
+  function renderPlaces() {
+    const grid = $('#placesGrid');
+    grid.innerHTML = '';
+    const filtered = PLACES.filter(p => state.filter === 'all' || p.cat === state.filter);
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="g-empty" style="grid-column: 1/-1;">Nichts gefunden</div>';
+      return;
+    }
+    filtered.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'place';
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => openInfoModal(p));
+      el.innerHTML = `
+        <div class="place-img">${p.img ? `<img src="${p.img}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.remove()">` : ''}<span class="tag">${p.tag}</span></div>
+        <div class="place-body">
+          <span class="place-cat">${catLabel(p.cat)}</span>
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="place-meta">
+            <span class="stars">${starRow(p.stars)}</span>
+            <span>${p.stars.toFixed(1)} · Google</span>
+          </div>
+        </div>`;
+      grid.appendChild(el);
+    });
+  }
+  function catLabel(c) {
+    return { nature: 'Naturaleza', culture: 'Cultura', village: 'Pueblo', city: 'Ciudad', food: 'Comida' }[c] || c;
+  }
+  function renderFood() {
+    const grid = $('#foodGrid');
+    grid.innerHTML = '';
+    FOODS.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'place';
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => openInfoModal(p));
+      el.innerHTML = `
+        <div class="place-img">${p.img ? `<img src="${p.img}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.remove()">` : ''}<span class="tag">${p.tag}</span></div>
+        <div class="place-body">
+          <span class="place-cat">${catLabel(p.cat)}</span>
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="place-meta">
+            <span class="stars">${starRow(p.stars)}</span>
+            <span>${p.stars.toFixed(1)} · Google</span>
+          </div>
+        </div>`;
+      grid.appendChild(el);
+    });
+  }
+  $$('#placeFilters .pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#placeFilters .pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.filter = btn.dataset.cat;
+      renderPlaces();
+    });
+  });
+  renderPlaces();
+  renderFood();
+
+  /* ============================ GALLERY ============================ */
+  const STORAGE_KEY = 'fermoselle_gallery_v2';
+
+  const SAMPLE_PHOTOS = [
+    { id: 'sample-1', name: 'Madrid · Gran Vía', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Gran_V%C3%ADa_%28Madrid%29_26.jpg/1280px-Gran_V%C3%ADa_%28Madrid%29_26.jpg', ts: 1, sample: true },
+    { id: 'sample-2', name: 'Salamanca · Plaza Mayor', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Plaza_Mayor%2C_Salamanca_-_at_night.jpg/1280px-Plaza_Mayor%2C_Salamanca_-_at_night.jpg', ts: 2, sample: true },
+    { id: 'sample-3', name: 'Zamora · Kathedrale', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Catedral_de_Zamora_%28Exterior%29.jpg/1280px-Catedral_de_Zamora_%28Exterior%29.jpg', ts: 3, sample: true },
+    { id: 'sample-4', name: 'Fermoselle · Arribes', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Fermoselle%2C_Los_Arribes_edited.jpg/1280px-Fermoselle%2C_Los_Arribes_edited.jpg', ts: 4, sample: true },
+    { id: 'sample-5', name: 'Salamanca · Universidad', url: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Salamanca_-_Universidad%2C_Escuelas_Mayores%2C_fachada_07.jpg', ts: 5, sample: true },
+    { id: 'sample-6', name: 'Madrid · Plaza Mayor', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Plaza_Mayor_de_Madrid_-_01.jpg/1280px-Plaza_Mayor_de_Madrid_-_01.jpg', ts: 6, sample: true },
+    { id: 'sample-7', name: 'Fermoselle · Dorfgasse', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Fermoselle_Vista_20080908_814_retouched.jpg/1280px-Fermoselle_Vista_20080908_814_retouched.jpg', ts: 7, sample: true },
+    { id: 'sample-8', name: 'Zamora · Puente de Piedra', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Puente_de_Piedra_%28Zamora%29_%282%29.JPG/1280px-Puente_de_Piedra_%28Zamora%29_%282%29.JPG', ts: 8, sample: true },
+    { id: 'sample-9', name: 'Salamanca · Casa de las Conchas', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Salamanca_Casa_de_las_Conchas.jpg/1280px-Salamanca_Casa_de_las_Conchas.jpg', ts: 9, sample: true },
+    { id: 'sample-10', name: 'Madrid · Retiro', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Monumento_a_Alfonso_XII_de_Espa%C3%B1a_en_los_Jardines_del_Retiro_-_04.jpg/1280px-Monumento_a_Alfonso_XII_de_Espa%C3%B1a_en_los_Jardines_del_Retiro_-_04.jpg', ts: 10, sample: true }
+  ];
+
+  function loadGallery() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return SAMPLE_PHOTOS.slice();
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : SAMPLE_PHOTOS.slice();
+    } catch { return SAMPLE_PHOTOS.slice(); }
+  }
+  function saveGallery() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.photos));
+    } catch(e) {
+      toast('Speicher voll — Bilder zu gross');
+    }
+  }
+  state.photos = loadGallery();
+
+  function renderGallery() {
+    const grid = $('#galleryGrid');
+    const empty = $('#galleryEmpty');
+    $('#galleryCount').textContent = state.photos.length;
+    // clear
+    grid.querySelectorAll('.g-item').forEach(e => e.remove());
+    if (state.photos.length === 0) {
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+    state.photos.forEach((p, i) => {
+      const el = document.createElement('div');
+      el.className = 'g-item';
+      el.dataset.idx = i;
+      el.innerHTML = `<img src="${p.url}" alt="${p.name || 'Foto'}" loading="lazy"><span class="caption">${escapeHTML(p.name || 'foto')}</span>`;
+      el.addEventListener('click', () => openLightbox(i));
+      grid.appendChild(el);
+    });
+  }
+  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+  /* --- Upload --- */
+  const fileInput = $('#fileInput');
+  const uploader = $('#uploader');
+  $('#pickBtn').addEventListener('click', () => fileInput.click());
+  uploader.addEventListener('click', e => {
+    if (e.target.closest('button')) return;
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', e => handleFiles(e.target.files));
+  ['dragenter', 'dragover'].forEach(ev => uploader.addEventListener(ev, e => {
+    e.preventDefault(); uploader.classList.add('drag');
+  }));
+  ['dragleave', 'drop'].forEach(ev => uploader.addEventListener(ev, e => {
+    e.preventDefault(); uploader.classList.remove('drag');
+  }));
+  uploader.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+
+  function handleFiles(list) {
+    const files = [...list].filter(f => f.type.startsWith('image/'));
+    if (!files.length) return;
+
+    let done = 0;
+    files.forEach(f => {
+      // resize to max 1600px to keep localStorage happy
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1600;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            const scale = maxDim / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const url = canvas.toDataURL('image/jpeg', 0.82);
+          state.photos.push({
+            id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+            name: f.name,
+            url,
+            ts: Date.now()
+          });
+          done++;
+          if (done === files.length) {
+            saveGallery();
+            renderGallery();
+            toast(`${files.length} Foto${files.length > 1 ? 's' : ''} hinzugefügt`);
+          }
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(f);
+    });
+    fileInput.value = '';
+  }
+
+  $('#clearBtn').addEventListener('click', () => {
+    if (!state.photos.length) return;
+    if (confirm('Alle Bilder löschen?')) {
+      state.photos = [];
+      saveGallery();
+      renderGallery();
+      toast('Galerie geleert');
+    }
+  });
+
+  /* ============================ LIGHTBOX ============================ */
+  const lb = $('#lightbox');
+  const lbImg = $('#lbImg');
+  const lbCounter = $('#lbCounter');
+  const lbCaption = $('#lbCaption');
+
+  function openLightbox(i) {
+    if (!state.photos.length) return;
+    state.lbIdx = i;
+    updateLightbox();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function updateLightbox() {
+    const p = state.photos[state.lbIdx];
+    if (!p) return closeLightbox();
+    lbImg.src = p.url;
+    lbImg.alt = p.name || 'Foto';
+    lbCounter.textContent = `${state.lbIdx + 1} / ${state.photos.length}`;
+    lbCaption.textContent = p.name || '';
+  }
+  function lbNext() {
+    if (!state.photos.length) return;
+    state.lbIdx = (state.lbIdx + 1) % state.photos.length;
+    updateLightbox();
+  }
+  function lbPrev() {
+    if (!state.photos.length) return;
+    state.lbIdx = (state.lbIdx - 1 + state.photos.length) % state.photos.length;
+    updateLightbox();
+  }
+  $('#lbClose').addEventListener('click', closeLightbox);
+  $('#lbNext').addEventListener('click', lbNext);
+  $('#lbPrev').addEventListener('click', lbPrev);
+  lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('lb-stage')) closeLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lbNext();
+    if (e.key === 'ArrowLeft') lbPrev();
+  });
+
+  // swipe on touch
+  let touchStartX = null;
+  lb.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  lb.addEventListener('touchend', e => {
+    if (touchStartX == null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 60) dx < 0 ? lbNext() : lbPrev();
+    touchStartX = null;
+  });
+
+  /* --- Download --- */
+  $('#lbDownload').addEventListener('click', () => {
+    const p = state.photos[state.lbIdx]; if (!p) return;
+    const a = document.createElement('a');
+    a.href = p.url; a.download = p.name || `fermoselle-${p.id}.jpg`;
+    a.click();
+  });
+
+  /* ============================ SHARE ============================ */
+  const shareSheet = $('#shareSheet');
+  $('#lbShare').addEventListener('click', async () => {
+    const p = state.photos[state.lbIdx]; if (!p) return;
+
+    // Try native Web Share with file first (mobile)
+    if (navigator.canShare) {
+      try {
+        const blob = await (await fetch(p.url)).blob();
+        const file = new File([blob], p.name || 'fermoselle.jpg', { type: blob.type });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Fermoselle 2026',
+            text: 'Ein Foto aus Fermoselle · Juli 2026'
+          });
+          return;
+        }
+      } catch (err) {
+        // user cancelled or not supported — fall through
+        if (err.name === 'AbortError') return;
+      }
+    }
+    // Fallback: open email composer sheet
+    openShareSheet();
+  });
+
+  function openShareSheet() {
+    shareSheet.classList.add('open');
+    $('#shareTo').value = '';
+    $('#shareMsg').value = 'Schau mal, ein Foto aus Fermoselle · Juli 2026 ✨\n(Das Bild selbst müsste manuell angehängt werden — vom Lightbox-Button „Save" runterladen.)';
+  }
+  function closeShareSheet() { shareSheet.classList.remove('open'); }
+  $('#shareCancel').addEventListener('click', closeShareSheet);
+  shareSheet.addEventListener('click', e => { if (e.target === shareSheet) closeShareSheet(); });
+
+  $('#shareSend').addEventListener('click', () => {
+    const to = $('#shareTo').value.trim();
+    const msg = $('#shareMsg').value.trim();
+    const p = state.photos[state.lbIdx];
+    const subject = `Fermoselle 2026 — ${p?.name || 'Foto'}`;
+    const body = `${msg}\n\n— Gesendet von der Fermoselle-Crew`;
+    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+    closeShareSheet();
+    toast('Mail-Client geöffnet');
+  });
+
+  /* ============================ INFO MODAL ============================ */
+  const infoModal = $('#infoModal');
+  function openInfoModal(p) {
+    $('#imCat').textContent = catLabel(p.cat);
+    $('#imTag').textContent = p.tag;
+    $('#imTitle').textContent = p.name;
+    $('#imDesc').textContent = p.desc;
+    $('#imStars').textContent = starRow(p.stars);
+    $('#imRating').textContent = `${p.stars.toFixed(1)} · Google`;
+    const imgEl = $('#imImg');
+    if (p.img) { imgEl.src = p.img; imgEl.style.display = ''; } else { imgEl.style.display = 'none'; }
+    const mapsQuery = encodeURIComponent(p.name);
+    $('#imMaps').href = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+    infoModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeInfoModal() {
+    infoModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  $('#imClose').addEventListener('click', closeInfoModal);
+  infoModal.addEventListener('click', e => { if (e.target === infoModal) closeInfoModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && infoModal.classList.contains('open')) closeInfoModal();
+  });
+
+  /* ============================ INIT ============================ */
+  renderGallery();
+
+  // smooth scroll for nav links
+  $$('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const t = document.querySelector(id);
+      if (t) {
+        e.preventDefault();
+        const y = t.getBoundingClientRect().top + window.scrollY - 60;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+  </script>
+</body>
+</html>
