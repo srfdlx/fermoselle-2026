@@ -1052,51 +1052,66 @@
   const PLACES = [
     { cat: 'village', name: 'Casco Histórico Fermoselle', tag: 'Dorf · 2 Min zu Fuss', stars: 4.7,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Fermoselle_Vista_20080908_814_retouched.jpg/1280px-Fermoselle_Vista_20080908_814_retouched.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Casco+Hist%C3%B3rico+Fermoselle+Zamora',
       desc: 'Verwinkelte Gassen aus Granit, Miradores mit Blick über den Duero-Canyon, mehr als 1.000 unterirdische Bodegas unter dem Dorf. Das Dorf steht seit 1974 unter Denkmalschutz als Conjunto Histórico-Artístico und gilt als eine der besterhaltenen Siedlungen der Region.' },
     { cat: 'nature', name: 'Mirador del Fraile', tag: 'Aussicht · 45 Min', stars: 4.9,
       img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mirador_del_Fraile-Arribes_del_Duero-Salamanca.jpg?width=1000',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Mirador+del+Fraile+Aldeadávila+de+la+Ribera',
       desc: 'Eine 12,8 m auskragende Corten-Stahl-Plattform, die 300 m senkrecht über dem Duero in den Abgrund ragt. Unter dem Glasausschnitt am Ende siehst du den Fluss direkt unter deinen Füssen. Blick auf den Stausee Aldeadávila, Geier und Adler im Aufwind. Gilt als spektakulärster Aussichtspunkt Spaniens — eröffnet 2022 in Aldeadávila de la Ribera.' },
-    { cat: 'nature', name: 'Mirador de Las Barrancas', tag: 'Aussicht · 15 Min', stars: 4.7,
-      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Arribes%20del%20Duero.JPG?width=1000',
-      desc: 'Senkrechte Granitwände fallen 400 m in den Fluss. Kurzer Spaziergang vom Parkplatz, Picknick-tauglich. Ein Lieblingsplatz von Ornithologen — mit etwas Glück sieht man Gänsegeier, Schmutzgeier und den seltenen Habichtsadler ziehen.' },
+    { cat: 'culture', name: 'Museo Hispano-Suizo', tag: 'Dorf · 2 Min zu Fuss', stars: null,
+      img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cowbells_and_bells_-_geograph.org.uk_-_1008587.jpg?width=1000',
+      mapsUrl: null,
+      desc: 'Valentin Garrido, der sein Berufsleben in der Schweiz verbrachte, hat in Fermoselle eigenhändig ein Museum erschaffen, das er selbst gepflegt und kuratiert hat – mit Schweizer Taschenmessern, Uhren und Kuhglocken sowie vielen weiteren Objekten aus Spenden, Käufen und Geschenken. ;)' },
     { cat: 'nature', name: 'Bootsfahrt Arribes del Duero', tag: 'Tour · 40 Min Fahrt', stars: 4.8,
       img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Embalse%20en%20los%20Arribes%20del%20Duero.JPG?width=1000',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Arribes+del+Duero+boat+Miranda+do+Douro',
       desc: 'Leise Elektro-Boote gleiten durch die engste Stelle des internationalen Duero-Canyons. Start in Miranda do Douro (PT), ca. 1h 45. Wasserfälle, Felsnester und totale Stille zwischen zwei Ländern.' },
     { cat: 'culture', name: 'Catedral de Zamora', tag: 'Zamora · 1h', stars: 4.7,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Catedral.001_-_Zamora.jpg/1280px-Catedral.001_-_Zamora.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Catedral+de+Zamora',
       desc: 'Romanisch, 12. Jh., mit markanter byzantinisch anmutender Schuppenkuppel. Direkt an der Stadtmauer über dem Duero, neben Burgruine und der legendären Puente de Piedra. Im Inneren: flämische Wandteppiche aus dem 15. Jh.' },
     { cat: 'city', name: 'Salamanca · Plaza Mayor', tag: 'Salamanca · 1h 15', stars: 4.9,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Plaza_Mayor%2C_Salamanca_-_at_night.jpg/1280px-Plaza_Mayor%2C_Salamanca_-_at_night.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Plaza+Mayor+Salamanca',
       desc: 'Einer der schönsten Barock-Plätze Europas, von Alberto de Churriguera ab 1729 geplant. Besonders magisch bei Nacht mit goldener Beleuchtung — der Sandstein der Fassaden glüht wie Honig.' },
     { cat: 'city', name: 'Universidad de Salamanca', tag: 'Salamanca · 1h 15', stars: 4.8,
       img: 'https://gemacuesta.es/wp-content/uploads/Cielo-de-Salamanca-y-biblioteca-.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Universidad+de+Salamanca',
       desc: 'Die älteste Universität Spaniens (gegründet 1218). Im Inneren verbirgt sich das «Cielo de Salamanca» — ein Sternfresko von Fernando Gallego aus dem 15. Jh. mit Tierkreiszeichen und Konstellationen, das jahrhundertelang hinter einer Zwischendecke verborgen war. Aussen: plateresque Fassade mit dem berühmten Frosch auf dem Totenschädel.' },
     { cat: 'village', name: 'Vinos de Fermoselle', tag: 'Wein · D.O. Arribes', stars: 4.8,
       img: 'https://fermoselle.es/wp-content/uploads/2021/04/Bodega-con-arcos-de-Fermoselle.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bodegas+Fermoselle+D.O.+Arribes',
       desc: 'Über 1.000 unterirdische Bodegas durchziehen das Fundament von Fermoselle — in mittelalterlichen Granitgewölben reift der Wein bei konstant 12–14°C. Die autochthone Rebsorte Juan García wächst auf terrassierten Steilhängen direkt am Duero-Canyon. Seit 2007 trägt die Region das Gütesiegel D.O. Arribes. Mehr auf fermoselle.es/vinos.' },
     { cat: 'village', name: 'Miranda do Douro (PT)', tag: 'Portugal · 30 Min', stars: 4.5,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Miranda_do_Douro_-_panoramio_%283%29.jpg/1280px-Miranda_do_Douro_-_panoramio_%283%29.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Miranda+do+Douro+Portugal',
       desc: 'Grenzdorf gegenüber, Zeitumstellung 1h zurück. Mittelalterliche Altstadt mit Kathedrale, die berühmten Pauliteiros-Stocktänzer, Mandel-Gebäck und Ausgangspunkt vieler Flussfahrten. Tipp: Posta Mirandesa zum Mittagessen.' }
   ];
 
   const FOODS = [
     { cat: 'food', name: 'Restaurante Posada Doña Urraca', tag: 'Fermoselle · Dorf', stars: 4.3,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Meson_Castellano_Asador_Rafael_Corrales_Aranda_de_Duero_Lechazo_Asado.JPG/1280px-Meson_Castellano_Asador_Rafael_Corrales_Aranda_de_Duero_Lechazo_Asado.JPG',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Restaurante+Posada+Do%C3%B1a+Urraca+Fermoselle',
       desc: 'Gehobene traditionelle Küche in der Posada, Lechazo aus dem Holzofen (Spezialität Kastiliens), starke Weinkarte aus den Arribes. #1 Restaurant in Fermoselle auf TripAdvisor. Reservierung empfohlen.' },
     { cat: 'food', name: 'Restaurante Medieval', tag: 'Fermoselle · Plaza Mayor', stars: 3.6,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Tapas_Tortilla_espa%C3%B1ola.jpg/1280px-Tapas_Tortilla_espa%C3%B1ola.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Restaurante+Medieval+Fermoselle+Zamora',
       desc: 'Direkt an der Plaza Mayor, rustikale Küche mit regionalen Produkten — Grill, Tapas und lokale Weine. Unkompliziert und zentral, gut für einen entspannten Abend im Dorfkern.' },
     { cat: 'food', name: 'Los Caprichos de Meneses', tag: 'Zamora · Plaza San Miguel', stars: 4.2,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Lechazo_Asado_-_Cordero_Asado_Asador_Rafael_Corrales_Aranda_de_Duero.JPG/1280px-Lechazo_Asado_-_Cordero_Asado_Asador_Rafael_Corrales_Aranda_de_Duero.JPG',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Los+Caprichos+de+Meneses+Zamora',
       desc: 'Top-8 in Zamora auf TripAdvisor (904 Bewertungen). Kreative Tapas auf hohem Niveau — Foie-Gras-Chupa-Chups, Bacalhau-Strudel, Tortilla-Soufflé. Moderne Interpretation klassischer kastilischer Küche an der Plaza San Miguel.' },
     { cat: 'food', name: 'Taberna el Motín', tag: 'Zamora · Altstadt', stars: 4.5,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Pincho_moruno-Valladolid.jpg/1280px-Pincho_moruno-Valladolid.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Taberna+el+Mot%C3%ADn+Zamora',
       desc: 'Rustikale Tapas-Bar in einem historischen Weinkeller — Grill im offenen Blickfeld, Gegrilltes, Pulpo und Foie mit Feigensosse. Über 1.000 Bewertungen, 4.5 Sterne. Kleines Lokal, Reservierung sehr empfohlen.' },
     { cat: 'food', name: 'Tapas 3.0', tag: 'Salamanca · Altstadt', stars: 4.6,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Logro%C3%B1o_2023_-_Pincho_Moruno.jpg/1280px-Logro%C3%B1o_2023_-_Pincho_Moruno.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Tapas+3.0+Salamanca',
       desc: 'Kreative, bezahlbare Tapas zwei Gehminuten von der Plaza Mayor. Sehr gute Lage, freundlicher Service, Raciones auf Wunsch. Perfekter Mittagsstopp zwischen Universität und Catedral Vieja.' },
     { cat: 'food', name: 'Restaurante España', tag: 'Fermoselle · Zentrum', stars: 3.9,
       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Ostras_espa%C3%B1olas_%28MM%29.jpg/1280px-Ostras_espa%C3%B1olas_%28MM%29.jpg',
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Restaurante+Espa%C3%B1a+Fermoselle+Zamora',
       desc: 'Hausmannskost, reichliche Portionen, faire Preise — die typische Dorftrattoria von Fermoselle. Bekannt für Kabeljau-Gerichte und hausgemachte Desserts. Freundlicher Service, gute Option für ein unkompliziertes Mittagessen.' }
   ];
 
@@ -1178,10 +1193,7 @@
           <span class="place-cat">${catLabel(p.cat)}</span>
           <h3>${p.name}</h3>
           <p>${p.desc}</p>
-          <div class="place-meta">
-            <span class="stars">${starRow(p.stars)}</span>
-            <span>${p.stars.toFixed(1)} · Google</span>
-          </div>
+          ${p.stars != null ? `<div class="place-meta"><span class="stars">${starRow(p.stars)}</span><span>${p.stars.toFixed(1)} · Google</span></div>` : ''}
         </div>`;
       grid.appendChild(el);
     });
@@ -1204,10 +1216,7 @@
           <span class="place-cat">${catLabel(p.cat)}</span>
           <h3>${p.name}</h3>
           <p>${p.desc}</p>
-          <div class="place-meta">
-            <span class="stars">${starRow(p.stars)}</span>
-            <span>${p.stars.toFixed(1)} · Google</span>
-          </div>
+          ${p.stars != null ? `<div class="place-meta"><span class="stars">${starRow(p.stars)}</span><span>${p.stars.toFixed(1)} · Google</span></div>` : ''}
         </div>`;
       grid.appendChild(el);
     });
@@ -1323,12 +1332,24 @@
     $('#imTag').textContent = p.tag;
     $('#imTitle').textContent = p.name;
     $('#imDesc').textContent = p.desc;
-    $('#imStars').textContent = starRow(p.stars);
-    $('#imRating').textContent = `${p.stars.toFixed(1)} · Google`;
+    const starsEl = $('#imStars');
+    const ratingEl = $('#imRating');
+    if (p.stars != null) {
+      starsEl.textContent = starRow(p.stars);
+      ratingEl.textContent = `${p.stars.toFixed(1)} · Google`;
+      starsEl.style.display = '';
+      ratingEl.style.display = '';
+    } else {
+      starsEl.textContent = '';
+      ratingEl.textContent = '';
+      starsEl.style.display = 'none';
+      ratingEl.style.display = 'none';
+    }
     const imgEl = $('#imImg');
     if (p.img) { imgEl.src = p.img; imgEl.style.display = ''; } else { imgEl.style.display = 'none'; }
-    const mapsQuery = encodeURIComponent(p.name);
-    $('#imMaps').href = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+    const mapsBtn = $('#imMaps');
+    if (p.mapsUrl) { mapsBtn.href = p.mapsUrl; mapsBtn.style.display = ''; }
+    else { mapsBtn.style.display = 'none'; }
     infoModal.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
