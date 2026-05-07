@@ -421,6 +421,7 @@
     }
 
     /* ---------- Places grid ---------- */
+    .places-carousel { position: relative; }
     .places {
       display: grid;
       grid-template-columns: 1fr;
@@ -428,6 +429,68 @@
     }
     @media (min-width: 640px) { .places { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 960px) { .places { grid-template-columns: repeat(3, 1fr); } }
+
+    /* Carousel arrows — hidden by default, shown on narrow */
+    .car-arrow {
+      display: none;
+      position: absolute;
+      top: 28%;
+      transform: translateY(-50%);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: color-mix(in oklch, var(--paper) 92%, transparent);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px -10px oklch(0 0 0 / 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 4;
+      transition: opacity .2s, transform .15s;
+    }
+    .car-arrow svg { width: 16px; height: 16px; }
+    .car-arrow:active { transform: translateY(-50%) scale(0.94); }
+    .car-arrow.prev { left: 6px; }
+    .car-arrow.next { right: 6px; }
+    .car-arrow[disabled] { opacity: 0; pointer-events: none; }
+
+    .car-dots {
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .car-dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--line);
+      transition: background .2s, width .2s;
+    }
+    .car-dot.active { background: var(--terra); width: 18px; border-radius: 999px; }
+
+    /* On narrow phones — convert to horizontal carousel */
+    @media (max-width: 560px) {
+      .places {
+        grid-template-columns: none;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        gap: 12px;
+        padding: 4px 4px 8px;
+        margin: 0 -4px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .places::-webkit-scrollbar { display: none; }
+      .places > .place {
+        flex: 0 0 86%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+      }
+      .car-arrow { display: inline-flex; }
+      .car-dots { display: flex; }
+    }
 
     .place {
       border: 1px solid var(--line);
@@ -506,158 +569,6 @@
     }
     .pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-    /* ---------- Gallery ---------- */
-    .uploader {
-      border: 1.5px dashed var(--line);
-      border-radius: var(--radius-lg);
-      padding: 28px 20px;
-      text-align: center;
-      background: var(--paper-2);
-      transition: all .2s;
-    }
-    .uploader.drag { border-color: var(--terra); background: color-mix(in oklch, var(--terra) 8%, var(--paper)); }
-    .uploader .up-icon {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--paper); border: 1px solid var(--line);
-      display: inline-flex; align-items: center; justify-content: center;
-      margin-bottom: 12px; color: var(--terra);
-    }
-    .uploader .up-icon svg { width: 20px; height: 20px; }
-    .uploader h4 {
-      font-family: var(--serif); font-weight: 400; font-size: 24px;
-      margin: 0 0 4px; letter-spacing: -0.01em;
-    }
-    .uploader p {
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 11px 18px;
-      border-radius: 999px;
-      background: var(--ink); color: var(--paper);
-      border: 1px solid var(--ink);
-      transition: transform .15s;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn.ghost { background: transparent; color: var(--ink); }
-    .btn.terra  { background: var(--terra); border-color: var(--terra); color: var(--paper); }
-
-    .gallery-head {
-      display: flex; align-items: baseline; justify-content: space-between;
-      margin: 26px 0 14px;
-    }
-    .gallery-head .count {
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--ink-3);
-    }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-    @media (min-width: 640px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; } }
-    @media (min-width: 960px) { .gallery-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; } }
-
-    .g-item {
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      border-radius: 6px;
-      background: var(--paper-3);
-      position: relative;
-      cursor: zoom-in;
-    }
-    .g-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform .5s cubic-bezier(.2,.8,.2,1);
-    }
-    .g-item:hover img { transform: scale(1.06); }
-    .g-item .caption {
-      position: absolute; left: 0; right: 0; bottom: 0;
-      padding: 8px 10px;
-      background: linear-gradient(to top, oklch(0.22 0.01 70 / 0.6), transparent);
-      color: var(--paper);
-      font-family: var(--mono); font-size: 9.5px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      opacity: 0; transition: opacity .2s;
-    }
-    .g-item:hover .caption { opacity: 1; }
-
-    .g-empty {
-      text-align: center;
-      padding: 32px 16px;
-      color: var(--ink-3);
-      font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    /* ---------- Lightbox ---------- */
-    .lightbox {
-      position: fixed; inset: 0;
-      background: oklch(0.12 0.005 70);
-      z-index: 90;
-      display: none;
-      flex-direction: column;
-    }
-    .lightbox.open { display: flex; }
-    .lb-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 16px;
-      color: color-mix(in oklch, var(--paper) 80%, transparent);
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .lb-bar .lb-actions { display: flex; gap: 6px; }
-    .lb-btn {
-      padding: 9px 11px;
-      border: 1px solid color-mix(in oklch, var(--paper) 18%, transparent);
-      border-radius: 999px;
-      color: color-mix(in oklch, var(--paper) 80%, transparent);
-      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      display: inline-flex; align-items: center; gap: 6px;
-      background: transparent;
-      transition: background .15s, color .15s;
-    }
-    .lb-btn:hover { background: color-mix(in oklch, var(--paper) 10%, transparent); color: var(--paper); }
-    .lb-btn svg { width: 13px; height: 13px; }
-    .lb-stage {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      position: relative;
-      padding: 0 8px 14px;
-      overflow: hidden;
-    }
-    .lb-stage img {
-      max-width: 100%; max-height: 100%;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 20px 60px -10px oklch(0 0 0 / 0.4);
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    .lb-nav {
-      position: absolute;
-      top: 50%; transform: translateY(-50%);
-      width: 44px; height: 44px; border-radius: 50%;
-      background: color-mix(in oklch, var(--paper) 14%, transparent);
-      color: var(--paper);
-      display: inline-flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(10px);
-      border: 1px solid color-mix(in oklch, var(--paper) 18%, transparent);
-    }
-    .lb-nav.prev { left: 14px; }
-    .lb-nav.next { right: 14px; }
-    .lb-nav svg { width: 18px; height: 18px; }
-    .lb-caption {
-      padding: 10px 20px 20px;
-      color: color-mix(in oklch, var(--paper) 80%, transparent);
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
     /* ---------- Toast ---------- */
     .toast {
       position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 24px);
@@ -670,58 +581,6 @@
       z-index: 200;
     }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-    /* ---------- Share sheet ---------- */
-    .share-sheet {
-      position: fixed; inset: 0;
-      background: oklch(0.15 0.005 70 / 0.55);
-      backdrop-filter: blur(8px);
-      z-index: 120;
-      display: none;
-      align-items: flex-end; justify-content: center;
-    }
-    .share-sheet.open { display: flex; animation: fadeIn .2s; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .share-panel {
-      width: 100%; max-width: 480px;
-      background: var(--paper);
-      border-top-left-radius: 22px; border-top-right-radius: 22px;
-      padding: 22px 22px 28px;
-      animation: slideUp .3s cubic-bezier(.2,.8,.2,1);
-    }
-    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    @media (min-width: 720px) {
-      .share-sheet { align-items: center; }
-      .share-panel { border-radius: 22px; }
-    }
-    .share-panel h3 {
-      font-family: var(--serif); font-weight: 400; font-size: 28px;
-      margin: 0 0 4px; letter-spacing: -0.015em;
-    }
-    .share-panel .share-hint {
-      font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--ink-3);
-      margin: 0 0 18px;
-    }
-    .share-panel label {
-      font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--ink-3);
-      display: block; margin-bottom: 6px;
-    }
-    .share-panel input, .share-panel textarea {
-      width: 100%;
-      font-family: var(--sans); font-size: 15px;
-      padding: 12px 14px;
-      background: var(--paper-2);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      color: var(--ink);
-      margin-bottom: 14px;
-      resize: none;
-    }
-    .share-panel textarea { min-height: 80px; }
-    .share-panel input:focus, .share-panel textarea:focus { outline: none; border-color: var(--terra); }
-    .share-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
     /* ---------- Info Modal ---------- */
     .info-modal {
@@ -887,7 +746,6 @@
       <a href="#plan" data-nav><span>Tagesplan</span><span class="num">04</span></a>
       <a href="#orte" data-nav><span>Orte &amp; Ausflüge</span><span class="num">05</span></a>
       <a href="#essen" data-nav><span>Restaurants</span><span class="num">06</span></a>
-      <a href="#galerie" data-nav><span>Galerie</span><span class="num">07</span></a>
     </div>
   </div>
 
@@ -898,7 +756,7 @@
       <span class="line"></span>
       <span>11 – 18 · 07 · 2026</span>
     </div>
-    <h1>Fermoselle<em>2026</em></h1>
+    <h1>Fermoselle<em> 2026</em></h1>
     <div class="hero-meta">
       <div>
         <span class="k">Destino</span>
@@ -962,7 +820,7 @@
       </div>
       <div class="trip-card">
         <span class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21v-8a4 4 0 014-4h10a4 4 0 014 4v8"/><path d="M3 21h18"/><path d="M8 9V5a4 4 0 018 0v4"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
         </span>
         <div class="big"><em>Casa</em> Garrido</div>
         <div class="sub">7 Nächte · Pool · Dorfkern</div>
@@ -971,8 +829,8 @@
 
     <div class="crew">
       <div class="avatars" aria-hidden="true">
-        <span class="av">A</span><span class="av">B</span><span class="av">C</span><span class="av">D</span>
-        <span class="av">E</span><span class="av">F</span><span class="av">G</span>
+        <span class="av">G</span><span class="av">C</span><span class="av">D</span><span class="av">P</span>
+        <span class="av">M</span><span class="av">R</span><span class="av">O</span>
       </div>
       <div class="crew-text">La cuadrilla · 7 Pax</div>
     </div>
@@ -1100,8 +958,17 @@
       <button class="pill" data-cat="city">Städte</button>
     </div>
 
-    <div class="places" id="placesGrid">
-      <!-- populated by JS -->
+    <div class="places-carousel" data-carousel>
+      <button class="car-arrow prev" type="button" aria-label="Vorheriges">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <button class="car-arrow next" type="button" aria-label="Nächstes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <div class="places" id="placesGrid">
+        <!-- populated by JS -->
+      </div>
+      <div class="car-dots" data-dots></div>
     </div>
     <p style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 16px;">Vorschaubilder · Unsplash (editorial)</p>
   </section>
@@ -1117,44 +984,17 @@
       </p>
     </div>
 
-    <div class="places" id="foodGrid">
-      <!-- populated by JS -->
-    </div>
-  </section>
-
-  <!-- =========================== GALLERY =========================== -->
-  <section class="section wrap" id="galerie">
-    <div class="sec-head">
-      <span class="sec-num">07 · Fotos</span>
-      <h2 class="sec-title">Die <em>Galerie</em>.</h2>
-      <p class="sec-lede">
-        Lädt eure Bilder hoch. Alles bleibt lokal im Browser gespeichert (Demo-Modus). Zum Teilen gibt es einen
-        Mail-Button direkt am Bild.
-      </p>
-    </div>
-
-    <div class="uploader" id="uploader">
-      <div class="up-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 20h14"/>
-        </svg>
-      </div>
-      <h4>Bilder hochladen</h4>
-      <p>Tippen, ziehen oder auswählen</p>
-      <button class="btn terra" id="pickBtn">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        Fotos auswählen
+    <div class="places-carousel" data-carousel>
+      <button class="car-arrow prev" type="button" aria-label="Vorheriges">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
       </button>
-      <input type="file" id="fileInput" accept="image/*" multiple hidden>
-    </div>
-
-    <div class="gallery-head">
-      <h3 style="font-family: var(--serif); font-weight: 400; font-size: 28px; letter-spacing: -0.015em; margin: 0;">Galería</h3>
-      <div class="count"><span id="galleryCount">0</span> Bilder · <button id="clearBtn" style="color: var(--terra); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;">Leeren</button></div>
-    </div>
-
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="g-empty" id="galleryEmpty" style="grid-column: 1 / -1;">Noch keine Bilder · ¡Adelante!</div>
+      <button class="car-arrow next" type="button" aria-label="Nächstes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <div class="places" id="foodGrid">
+        <!-- populated by JS -->
+      </div>
+      <div class="car-dots" data-dots></div>
     </div>
   </section>
 
@@ -1169,50 +1009,6 @@
     <div class="mark">Fermoselle 2026</div>
     <div>Siete amigos · Made with care · ZRH ⇄ MAD</div>
   </footer>
-
-  <!-- =========================== LIGHTBOX =========================== -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-    <div class="lb-bar">
-      <span id="lbCounter">1 / 1</span>
-      <div class="lb-actions">
-        <button class="lb-btn" id="lbShare" title="Per E-Mail teilen">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
-          Mail
-        </button>
-        <button class="lb-btn" id="lbDownload" title="Herunterladen">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg>
-          Save
-        </button>
-        <button class="lb-btn" id="lbClose" title="Schliessen">Schliessen ×</button>
-      </div>
-    </div>
-    <div class="lb-stage">
-      <button class="lb-nav prev" id="lbPrev" aria-label="Vorheriges">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
-      </button>
-      <img id="lbImg" alt="" />
-      <button class="lb-nav next" id="lbNext" aria-label="Nächstes">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-    <div class="lb-caption" id="lbCaption"></div>
-  </div>
-
-  <!-- =========================== SHARE SHEET =========================== -->
-  <div class="share-sheet" id="shareSheet">
-    <div class="share-panel" onclick="event.stopPropagation()">
-      <h3>Foto per Mail teilen</h3>
-      <p class="share-hint">Öffnet deinen Mail-Client mit einem Download-Link zum Bild.</p>
-      <label for="shareTo">An</label>
-      <input id="shareTo" type="email" placeholder="freund@mail.com" />
-      <label for="shareMsg">Nachricht</label>
-      <textarea id="shareMsg" placeholder="Ein kleiner Gruss aus Fermoselle..."></textarea>
-      <div class="share-actions">
-        <button class="btn ghost" id="shareCancel">Abbrechen</button>
-        <button class="btn" id="shareSend">Mail öffnen</button>
-      </div>
-    </div>
-  </div>
 
   <!-- =========================== TOAST =========================== -->
   <div class="toast" id="toast">Kopiert</div>
@@ -1390,6 +1186,7 @@
   function catLabel(c) {
     return { nature: 'Naturaleza', culture: 'Cultura', village: 'Pueblo', city: 'Ciudad', food: 'Comida' }[c] || c;
   }
+  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
   function renderFood() {
     const grid = $('#foodGrid');
     grid.innerHTML = '';
@@ -1423,243 +1220,98 @@
   renderPlaces();
   renderFood();
 
-  /* ============================ GALLERY ============================ */
-  const STORAGE_KEY = 'fermoselle_gallery_v2';
+  /* ============================ CAROUSEL (mobile) ============================ */
+  function initCarousel(root) {
+    const track = root.querySelector('.places');
+    const prev = root.querySelector('.car-arrow.prev');
+    const next = root.querySelector('.car-arrow.next');
+    const dotsWrap = root.querySelector('[data-dots]');
+    if (!track || !prev || !next) return;
 
-  const SAMPLE_PHOTOS = [
-    { id: 'sample-1', name: 'Madrid · Gran Vía', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Gran_V%C3%ADa_%28Madrid%29_26.jpg/1280px-Gran_V%C3%ADa_%28Madrid%29_26.jpg', ts: 1, sample: true },
-    { id: 'sample-2', name: 'Salamanca · Plaza Mayor', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Plaza_Mayor%2C_Salamanca_-_at_night.jpg/1280px-Plaza_Mayor%2C_Salamanca_-_at_night.jpg', ts: 2, sample: true },
-    { id: 'sample-3', name: 'Zamora · Kathedrale', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Catedral_de_Zamora_%28Exterior%29.jpg/1280px-Catedral_de_Zamora_%28Exterior%29.jpg', ts: 3, sample: true },
-    { id: 'sample-4', name: 'Fermoselle · Arribes', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Fermoselle%2C_Los_Arribes_edited.jpg/1280px-Fermoselle%2C_Los_Arribes_edited.jpg', ts: 4, sample: true },
-    { id: 'sample-5', name: 'Salamanca · Universidad', url: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Salamanca_-_Universidad%2C_Escuelas_Mayores%2C_fachada_07.jpg', ts: 5, sample: true },
-    { id: 'sample-6', name: 'Madrid · Plaza Mayor', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Plaza_Mayor_de_Madrid_-_01.jpg/1280px-Plaza_Mayor_de_Madrid_-_01.jpg', ts: 6, sample: true },
-    { id: 'sample-7', name: 'Fermoselle · Dorfgasse', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Fermoselle_Vista_20080908_814_retouched.jpg/1280px-Fermoselle_Vista_20080908_814_retouched.jpg', ts: 7, sample: true },
-    { id: 'sample-8', name: 'Zamora · Puente de Piedra', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Puente_de_Piedra_%28Zamora%29_%282%29.JPG/1280px-Puente_de_Piedra_%28Zamora%29_%282%29.JPG', ts: 8, sample: true },
-    { id: 'sample-9', name: 'Salamanca · Casa de las Conchas', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Salamanca_Casa_de_las_Conchas.jpg/1280px-Salamanca_Casa_de_las_Conchas.jpg', ts: 9, sample: true },
-    { id: 'sample-10', name: 'Madrid · Retiro', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Monumento_a_Alfonso_XII_de_Espa%C3%B1a_en_los_Jardines_del_Retiro_-_04.jpg/1280px-Monumento_a_Alfonso_XII_de_Espa%C3%B1a_en_los_Jardines_del_Retiro_-_04.jpg', ts: 10, sample: true }
-  ];
-
-  function loadGallery() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return SAMPLE_PHOTOS.slice();
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : SAMPLE_PHOTOS.slice();
-    } catch { return SAMPLE_PHOTOS.slice(); }
-  }
-  function saveGallery() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.photos));
-    } catch(e) {
-      toast('Speicher voll — Bilder zu gross');
+    function isCarouselMode() {
+      return window.matchMedia('(max-width: 560px)').matches;
     }
-  }
-  state.photos = loadGallery();
 
-  function renderGallery() {
-    const grid = $('#galleryGrid');
-    const empty = $('#galleryEmpty');
-    $('#galleryCount').textContent = state.photos.length;
-    // clear
-    grid.querySelectorAll('.g-item').forEach(e => e.remove());
-    if (state.photos.length === 0) {
-      empty.style.display = '';
-      return;
+    function items() {
+      return [...track.querySelectorAll('.place')];
     }
-    empty.style.display = 'none';
-    state.photos.forEach((p, i) => {
-      const el = document.createElement('div');
-      el.className = 'g-item';
-      el.dataset.idx = i;
-      el.innerHTML = `<img src="${p.url}" alt="${p.name || 'Foto'}" loading="lazy"><span class="caption">${escapeHTML(p.name || 'foto')}</span>`;
-      el.addEventListener('click', () => openLightbox(i));
-      grid.appendChild(el);
-    });
-  }
-  function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 
-  /* --- Upload --- */
-  const fileInput = $('#fileInput');
-  const uploader = $('#uploader');
-  $('#pickBtn').addEventListener('click', () => fileInput.click());
-  uploader.addEventListener('click', e => {
-    if (e.target.closest('button')) return;
-    fileInput.click();
-  });
-  fileInput.addEventListener('change', e => handleFiles(e.target.files));
-  ['dragenter', 'dragover'].forEach(ev => uploader.addEventListener(ev, e => {
-    e.preventDefault(); uploader.classList.add('drag');
-  }));
-  ['dragleave', 'drop'].forEach(ev => uploader.addEventListener(ev, e => {
-    e.preventDefault(); uploader.classList.remove('drag');
-  }));
-  uploader.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
-
-  function handleFiles(list) {
-    const files = [...list].filter(f => f.type.startsWith('image/'));
-    if (!files.length) return;
-
-    let done = 0;
-    files.forEach(f => {
-      // resize to max 1600px to keep localStorage happy
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 1600;
-          let { width, height } = img;
-          if (width > maxDim || height > maxDim) {
-            const scale = maxDim / Math.max(width, height);
-            width = Math.round(width * scale);
-            height = Math.round(height * scale);
-          }
-          canvas.width = width; canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          const url = canvas.toDataURL('image/jpeg', 0.82);
-          state.photos.push({
-            id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-            name: f.name,
-            url,
-            ts: Date.now()
-          });
-          done++;
-          if (done === files.length) {
-            saveGallery();
-            renderGallery();
-            toast(`${files.length} Foto${files.length > 1 ? 's' : ''} hinzugefügt`);
-          }
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(f);
-    });
-    fileInput.value = '';
-  }
-
-  $('#clearBtn').addEventListener('click', () => {
-    if (!state.photos.length) return;
-    if (confirm('Alle Bilder löschen?')) {
-      state.photos = [];
-      saveGallery();
-      renderGallery();
-      toast('Galerie geleert');
+    function buildDots() {
+      if (!dotsWrap) return;
+      dotsWrap.innerHTML = '';
+      items().forEach((_, i) => {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'car-dot';
+        d.setAttribute('aria-label', `Karte ${i + 1}`);
+        d.addEventListener('click', () => scrollToIdx(i));
+        dotsWrap.appendChild(d);
+      });
+      update();
     }
-  });
 
-  /* ============================ LIGHTBOX ============================ */
-  const lb = $('#lightbox');
-  const lbImg = $('#lbImg');
-  const lbCounter = $('#lbCounter');
-  const lbCaption = $('#lbCaption');
+    function currentIdx() {
+      const list = items();
+      if (!list.length) return 0;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, bestDist = Infinity;
+      list.forEach((el, i) => {
+        const c = el.offsetLeft + el.offsetWidth / 2;
+        const d = Math.abs(c - center);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    }
 
-  function openLightbox(i) {
-    if (!state.photos.length) return;
-    state.lbIdx = i;
-    updateLightbox();
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function updateLightbox() {
-    const p = state.photos[state.lbIdx];
-    if (!p) return closeLightbox();
-    lbImg.src = p.url;
-    lbImg.alt = p.name || 'Foto';
-    lbCounter.textContent = `${state.lbIdx + 1} / ${state.photos.length}`;
-    lbCaption.textContent = p.name || '';
-  }
-  function lbNext() {
-    if (!state.photos.length) return;
-    state.lbIdx = (state.lbIdx + 1) % state.photos.length;
-    updateLightbox();
-  }
-  function lbPrev() {
-    if (!state.photos.length) return;
-    state.lbIdx = (state.lbIdx - 1 + state.photos.length) % state.photos.length;
-    updateLightbox();
-  }
-  $('#lbClose').addEventListener('click', closeLightbox);
-  $('#lbNext').addEventListener('click', lbNext);
-  $('#lbPrev').addEventListener('click', lbPrev);
-  lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('lb-stage')) closeLightbox(); });
+    function scrollToIdx(i) {
+      const list = items();
+      if (!list[i]) return;
+      const el = list[i];
+      const target = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+      track.scrollTo({ left: target, behavior: 'smooth' });
+    }
 
-  document.addEventListener('keydown', e => {
-    if (!lb.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') lbNext();
-    if (e.key === 'ArrowLeft') lbPrev();
-  });
-
-  // swipe on touch
-  let touchStartX = null;
-  lb.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
-  lb.addEventListener('touchend', e => {
-    if (touchStartX == null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 60) dx < 0 ? lbNext() : lbPrev();
-    touchStartX = null;
-  });
-
-  /* --- Download --- */
-  $('#lbDownload').addEventListener('click', () => {
-    const p = state.photos[state.lbIdx]; if (!p) return;
-    const a = document.createElement('a');
-    a.href = p.url; a.download = p.name || `fermoselle-${p.id}.jpg`;
-    a.click();
-  });
-
-  /* ============================ SHARE ============================ */
-  const shareSheet = $('#shareSheet');
-  $('#lbShare').addEventListener('click', async () => {
-    const p = state.photos[state.lbIdx]; if (!p) return;
-
-    // Try native Web Share with file first (mobile)
-    if (navigator.canShare) {
-      try {
-        const blob = await (await fetch(p.url)).blob();
-        const file = new File([blob], p.name || 'fermoselle.jpg', { type: blob.type });
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'Fermoselle 2026',
-            text: 'Ein Foto aus Fermoselle · Juli 2026'
-          });
-          return;
-        }
-      } catch (err) {
-        // user cancelled or not supported — fall through
-        if (err.name === 'AbortError') return;
+    function update() {
+      if (!isCarouselMode()) {
+        prev.setAttribute('disabled', '');
+        next.setAttribute('disabled', '');
+        return;
+      }
+      const i = currentIdx();
+      const list = items();
+      if (i <= 0) prev.setAttribute('disabled', ''); else prev.removeAttribute('disabled');
+      if (i >= list.length - 1) next.setAttribute('disabled', ''); else next.removeAttribute('disabled');
+      if (dotsWrap) {
+        [...dotsWrap.children].forEach((d, di) => d.classList.toggle('active', di === i));
       }
     }
-    // Fallback: open email composer sheet
-    openShareSheet();
-  });
 
-  function openShareSheet() {
-    shareSheet.classList.add('open');
-    $('#shareTo').value = '';
-    $('#shareMsg').value = 'Schau mal, ein Foto aus Fermoselle · Juli 2026 ✨\n(Das Bild selbst müsste manuell angehängt werden — vom Lightbox-Button „Save" runterladen.)';
+    prev.addEventListener('click', () => scrollToIdx(Math.max(0, currentIdx() - 1)));
+    next.addEventListener('click', () => scrollToIdx(Math.min(items().length - 1, currentIdx() + 1)));
+
+    let scrollT;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollT);
+      scrollT = setTimeout(update, 60);
+    }, { passive: true });
+
+    window.addEventListener('resize', update);
+
+    // expose rebuild for after dynamic re-render of places (filters)
+    root._carouselRebuild = buildDots;
+    buildDots();
   }
-  function closeShareSheet() { shareSheet.classList.remove('open'); }
-  $('#shareCancel').addEventListener('click', closeShareSheet);
-  shareSheet.addEventListener('click', e => { if (e.target === shareSheet) closeShareSheet(); });
 
-  $('#shareSend').addEventListener('click', () => {
-    const to = $('#shareTo').value.trim();
-    const msg = $('#shareMsg').value.trim();
-    const p = state.photos[state.lbIdx];
-    const subject = `Fermoselle 2026 — ${p?.name || 'Foto'}`;
-    const body = `${msg}\n\n— Gesendet von der Fermoselle-Crew`;
-    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-    closeShareSheet();
-    toast('Mail-Client geöffnet');
-  });
+  $$('[data-carousel]').forEach(initCarousel);
+
+  // After place filter re-renders, rebuild dots
+  const placesCarousel = $('#placesGrid')?.closest('[data-carousel]');
+  if (placesCarousel) {
+    const obs = new MutationObserver(() => {
+      placesCarousel._carouselRebuild?.();
+    });
+    obs.observe($('#placesGrid'), { childList: true });
+  }
 
   /* ============================ INFO MODAL ============================ */
   const infoModal = $('#infoModal');
@@ -1688,8 +1340,6 @@
   });
 
   /* ============================ INIT ============================ */
-  renderGallery();
-
   // smooth scroll for nav links
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
