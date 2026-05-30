@@ -371,6 +371,61 @@
       color: var(--terra); text-decoration: none;
     }
 
+    /* ---------- Weather strip ---------- */
+    .weather-strip {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 12px;
+      background: var(--paper-2);
+    }
+    .weather-head {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .wc-icon { color: var(--terra); flex-shrink: 0; }
+    .wc-icon svg { width: 28px; height: 28px; display: block; }
+    .wh-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .wc-eyebrow {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .wc-condition {
+      font-family: var(--serif); font-size: 19px;
+      line-height: 1.1; color: var(--ink);
+    }
+    .wc-ts {
+      font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: 0.1em; color: var(--ink-3);
+      text-align: right; white-space: nowrap;
+    }
+    .weather-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+    }
+    .weather-cell {
+      padding: 16px 20px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .weather-cell + .weather-cell { border-left: 1px solid var(--line); }
+    .wc-label {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .wc-val {
+      font-family: var(--serif); font-size: 32px;
+      line-height: 1; letter-spacing: -0.02em; color: var(--ink);
+    }
+    .wc-unit {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+    }
+    @media (max-width: 400px) {
+      .weather-head { padding: 14px 16px; }
+      .weather-cell { padding: 14px 16px; }
+      .wc-val { font-size: 26px; }
+    }
+
     /* ---------- Itinerary ---------- */
     .days {
       display: flex; flex-direction: column;
@@ -861,6 +916,34 @@
           <a href="https://fermoselle.es/" target="_blank" rel="noopener">fermoselle.es →</a>
           <a href="https://www.google.com/maps/dir/Madrid-Barajas+Airport/Fermoselle,+Zamora,+Spain" target="_blank" rel="noopener">Route in Google Maps öffnen →</a>
         </span>
+      </div>
+    </div>
+
+    <div class="weather-strip" id="weatherStrip">
+      <div class="weather-head">
+        <div class="wc-icon" id="wIcon"></div>
+        <div class="wh-info">
+          <span class="wc-eyebrow">Aktuelles Wetter · Fermoselle</span>
+          <div class="wc-condition" id="wCondition">Laden…</div>
+        </div>
+        <div class="wc-ts" id="wTimestamp"></div>
+      </div>
+      <div class="weather-stats">
+        <div class="weather-cell">
+          <span class="wc-label">Temperatur</span>
+          <span class="wc-val" id="wTemp">—</span>
+          <span class="wc-unit">°C</span>
+        </div>
+        <div class="weather-cell">
+          <span class="wc-label">Luftfeuchtigkeit</span>
+          <span class="wc-val" id="wHumid">—</span>
+          <span class="wc-unit">%</span>
+        </div>
+        <div class="weather-cell">
+          <span class="wc-label">Regenwahrscheinlichkeit</span>
+          <span class="wc-val" id="wRain">—</span>
+          <span class="wc-unit">%</span>
+        </div>
       </div>
     </div>
   </section>
@@ -1386,6 +1469,52 @@
       }
     });
   });
+
+  // Weather widget — Open-Meteo API (no key required)
+  (function () {
+    function wmoInfo(c) {
+      if (c === 0)  return { label: 'Sonnig',         icon: 'sun' };
+      if (c <= 2)   return { label: 'Heiter',         icon: 'sun' };
+      if (c === 3)  return { label: 'Bedeckt',        icon: 'cloud' };
+      if (c <= 48)  return { label: 'Nebel',          icon: 'cloud' };
+      if (c <= 55)  return { label: 'Nieselregen',    icon: 'rain' };
+      if (c <= 65)  return { label: 'Regen',          icon: 'rain' };
+      if (c <= 77)  return { label: 'Schnee',         icon: 'snow' };
+      if (c <= 82)  return { label: 'Schauer',        icon: 'rain' };
+      if (c <= 86)  return { label: 'Schneeschauer',  icon: 'snow' };
+      return               { label: 'Gewitter',       icon: 'thunder' };
+    }
+    const ICONS = {
+      sun:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>`,
+      cloud:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`,
+      rain:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m9.2 22 3-7"/><path d="m9 13-2 5"/><path d="m17 13-2 5"/></svg>`,
+      snow:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 15h.01M8 19h.01M12 17h.01M12 21h.01M16 15h.01M16 19h.01"/></svg>`,
+      thunder:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m13 12-3 5h4l-3 5"/></svg>`,
+    };
+    async function loadWeather() {
+      try {
+        const url = 'https://api.open-meteo.com/v1/forecast' +
+          '?latitude=41.31&longitude=-6.40' +
+          '&current=temperature_2m,relative_humidity_2m,weather_code' +
+          '&hourly=precipitation_probability&forecast_days=1&timezone=Europe%2FMadrid';
+        const data = await fetch(url).then(r => r.json());
+        const cur = data.current;
+        const idx = data.hourly.time.indexOf(cur.time);
+        const rainProb = idx >= 0 ? data.hourly.precipitation_probability[idx] : 0;
+        const info = wmoInfo(cur.weather_code);
+        document.getElementById('wIcon').innerHTML = ICONS[info.icon];
+        document.getElementById('wCondition').textContent = info.label;
+        document.getElementById('wTemp').textContent = Math.round(cur.temperature_2m);
+        document.getElementById('wHumid').textContent = Math.round(cur.relative_humidity_2m);
+        document.getElementById('wRain').textContent = Math.round(rainProb);
+        document.getElementById('wTimestamp').textContent = cur.time.split('T')[1] + ' Ortszeit';
+      } catch (_) {
+        const el = document.getElementById('wCondition');
+        if (el) el.textContent = 'Nicht verfügbar';
+      }
+    }
+    loadWeather();
+  }());
   </script>
 </body>
 </html>
