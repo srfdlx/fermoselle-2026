@@ -252,6 +252,89 @@
       .cd-cell { padding: 22px 20px 18px; }
     }
 
+    /* ---------- Flight card ---------- */
+    .flight-card {
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--paper-2);
+      overflow: hidden;
+    }
+    .fc-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .fc-airline {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .fc-airline svg { width: 20px; height: 20px; color: var(--terra); flex-shrink: 0; }
+    .fc-num {
+      font-family: var(--serif); font-size: 19px;
+      letter-spacing: -0.01em; color: var(--ink); line-height: 1.1;
+    }
+    .fc-carrier {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .fc-badge {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      color: var(--ink-3);
+    }
+    .fc-badge.live {
+      color: var(--terra); border-color: var(--terra);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    .fc-route {
+      display: flex; align-items: center;
+      padding: 20px;
+      gap: 8px;
+    }
+    .fc-stop { flex: 1.2; }
+    .fc-stop-r { text-align: right; }
+    .fc-time {
+      font-family: var(--serif); font-size: 36px;
+      line-height: 1; letter-spacing: -0.025em; color: var(--ink);
+    }
+    .fc-iata {
+      font-family: var(--mono); font-size: 13px;
+      letter-spacing: 0.12em; color: var(--ink-2);
+      margin-top: 6px;
+    }
+    .fc-city {
+      font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+      margin-top: 2px;
+    }
+    .fc-mid {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .fc-dur {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .fc-line {
+      display: flex; align-items: center; gap: 4px; width: 100%; color: var(--line);
+    }
+    .fc-line span { flex: 1; height: 1px; background: var(--line); }
+    .fc-line svg { flex-shrink: 0; color: var(--ink-3); opacity: 0.5; }
+    .fc-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .fc-track { color: var(--terra); text-decoration: none; }
+    @media (max-width: 400px) {
+      .fc-time { font-size: 28px; }
+      .fc-route { padding: 16px; }
+    }
+
     /* ---------- Section frame ---------- */
     section.section {
       padding-top: 72px;
@@ -835,7 +918,7 @@
     <!-- Countdown -->
     <div class="countdown" id="countdown">
       <div class="countdown-label">
-        <span>Abflug Zürich · 11.07 · 13:30</span>
+        <span>Abflug Zürich · 11.07 · 11:05</span>
         <span class="pulse" id="cdStatus">Live</span>
       </div>
       <div class="cd-grid" id="cdGrid">
@@ -843,6 +926,44 @@
         <div class="cd-cell"><div class="num" id="cdH">—</div><div class="lbl">Stunden</div></div>
         <div class="cd-cell"><div class="num" id="cdM">—</div><div class="lbl">Minuten</div></div>
         <div class="cd-cell"><div class="num" id="cdS">—</div><div class="lbl">Sekunden</div></div>
+      </div>
+    </div>
+
+    <!-- Flight info card -->
+    <div class="flight-card" id="flightCard">
+      <div class="fc-head">
+        <div class="fc-airline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 16l20-6-7-4-3 2-4-1-3 2 2 2-5 2z"/><path d="M4 20h16"/></svg>
+          <div>
+            <div class="fc-num">UX 1676</div>
+            <div class="fc-carrier">Air Europa</div>
+          </div>
+        </div>
+        <div class="fc-badge" id="fcBadge">Geplant</div>
+      </div>
+      <div class="fc-route">
+        <div class="fc-stop">
+          <div class="fc-time">11:05</div>
+          <div class="fc-iata">ZRH</div>
+          <div class="fc-city">Zürich</div>
+        </div>
+        <div class="fc-mid">
+          <span class="fc-dur">~2h 15m</span>
+          <div class="fc-line">
+            <span></span>
+            <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="12"><line x1="0" y1="6" x2="12" y2="6"/><polyline points="8,2 12,6 8,10"/></svg>
+            <span></span>
+          </div>
+        </div>
+        <div class="fc-stop fc-stop-r">
+          <div class="fc-time">~13:20</div>
+          <div class="fc-iata">MAD</div>
+          <div class="fc-city">Madrid</div>
+        </div>
+      </div>
+      <div class="fc-foot">
+        <span>Sa, 11. Juli 2026 · Terminal T1</span>
+        <a class="fc-track" href="https://www.flightaware.com/live/flight/UX1676" target="_blank" rel="noopener">Live verfolgen →</a>
       </div>
     </div>
   </header>
@@ -853,7 +974,7 @@
       <span class="sec-num">02 · La Expedición</span>
       <h2 class="sec-title">Sieben Freunde,<br>eine Woche <em>im Duero-Tal</em>.</h2>
       <p class="sec-lede">
-        Am Samstag, 11. Juli 2026, heben wir um 13:30 ab Zürich nach Madrid ab. Von Barajas übernehmen wir unseren Mietwagen und
+        Am Samstag, 11. Juli 2026, heben wir um 11:05 ab Zürich nach Madrid ab. Von Barajas übernehmen wir unseren Mietwagen und
         fahren rund drei Stunden gegen Nordwest — durch Sonnenblumenfelder und Eichenhaine — bis ins Grenzdorf
         Fermoselle, wo uns die <em>Casa Garrido</em> eine Woche lang beherbergt. Rückflug am 18.07 um 17:10 ab Madrid.
       </p>
@@ -865,7 +986,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 16l20-6-7-4-3 2-4-1-3 2 2 2-5 2z"/><path d="M4 20h16"/></svg>
         </span>
         <div class="big"><em>Flug</em> ZRH → MAD</div>
-        <div class="sub">Hin 11.07 · 13:30 → Rück 18.07 · 17:10</div>
+        <div class="sub">Hin 11.07 · 11:05 → Rück 18.07 · 17:10</div>
       </div>
       <div class="trip-card">
         <span class="icon">
@@ -966,7 +1087,7 @@
           <div class="day-title">Anreise · Zürich → Fermoselle</div>
           <div class="day-chips"><span class="chip">Flug</span><span class="chip">Mietauto</span><span class="chip">Check-in</span></div>
         </div>
-        <div class="day-body">Treffpunkt ZRH ca. 11:30. Abflug 13:30, Landung Madrid-Barajas gegen 15:45 Ortszeit. Mietwagen abholen, Fahrt nach Fermoselle (~3.5 h). Ankunft in der Casa Garrido gegen 20:00, Willkommensabend im Dorf.</div>
+        <div class="day-body">Treffpunkt ZRH ca. 09:00. Abflug 11:05 (UX1676 Air Europa), Landung Madrid-Barajas gegen 13:20 Ortszeit. Mietwagen abholen, Fahrt nach Fermoselle (~3.5 h). Ankunft in der Casa Garrido gegen 20:00, Willkommensabend im Dorf.</div>
       </div>
       <div class="day">
         <div class="day-date">So<strong>12</strong>Jul</div>
@@ -1222,8 +1343,8 @@
   }
 
   /* ============================ COUNTDOWN ============================ */
-  // 11 July 2026, 13:30 CEST (UTC+2) → 11:30 UTC
-  const TARGET = new Date('2026-07-11T11:30:00Z');
+  // 11 July 2026, 11:05 CEST (UTC+2) → 09:05 UTC
+  const TARGET = new Date('2026-07-11T09:05:00Z');
   function tickCountdown() {
     const now = new Date();
     let diff = Math.max(0, TARGET - now);
@@ -1469,6 +1590,28 @@
       }
     });
   });
+
+  // Flight status badge
+  (function () {
+    const DEP = new Date('2026-07-11T09:05:00Z'); // 11:05 CEST
+    const ARR = new Date('2026-07-11T11:20:00Z'); // ~13:20 CEST
+    function updateBadge() {
+      const el = document.getElementById('fcBadge');
+      if (!el) return;
+      const now = new Date();
+      if (now >= ARR) {
+        el.className = 'fc-badge'; el.textContent = 'Gelandet';
+      } else if (now >= DEP) {
+        el.className = 'fc-badge live'; el.textContent = 'Im Flug';
+      } else if (now >= DEP - 86400000) {
+        el.className = 'fc-badge'; el.textContent = 'Heute';
+      } else {
+        el.className = 'fc-badge'; el.textContent = 'Geplant';
+      }
+    }
+    updateBadge();
+    setInterval(updateBadge, 30000);
+  }());
 
   // Weather widget — Open-Meteo API (no key required)
   (function () {
