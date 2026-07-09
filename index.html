@@ -509,6 +509,54 @@
       .wc-val { font-size: 26px; }
     }
 
+    /* ---------- Forecast row ---------- */
+    .forecast-row {
+      border-top: 1px solid var(--line);
+      padding: 12px 16px;
+      display: flex; gap: 4px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .forecast-row::-webkit-scrollbar { display: none; }
+    .forecast-day {
+      flex: 1 0 60px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 10px 6px;
+      border-radius: var(--radius);
+    }
+    .forecast-day.fd-today { background: var(--paper-3); }
+    .forecast-day.fd-trip {
+      outline: 1px solid color-mix(in oklch, var(--terra) 35%, var(--line));
+      outline-offset: -1px;
+    }
+    .fd-tag {
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--terra); margin-bottom: -2px;
+    }
+    .fd-dow {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .fd-date {
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.05em; color: var(--ink-3); margin-top: -2px;
+    }
+    .fd-icon { color: var(--terra); line-height: 0; }
+    .fd-icon svg { width: 18px; height: 18px; display: block; }
+    .fd-tmax {
+      font-family: var(--serif); font-size: 17px;
+      line-height: 1; letter-spacing: -0.02em; color: var(--ink);
+    }
+    .fd-tmin {
+      font-family: var(--mono); font-size: 9px; color: var(--ink-3); margin-top: -3px;
+    }
+    .fd-rain {
+      display: flex; align-items: center; gap: 2px;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: 0.04em; color: var(--ink-3);
+    }
+    .fd-rain svg { width: 8px; height: 8px; opacity: 0.55; flex-shrink: 0; }
+
     /* ---------- Itinerary ---------- */
     .days {
       display: flex; flex-direction: column;
@@ -1066,6 +1114,7 @@
           <span class="wc-unit">%</span>
         </div>
       </div>
+      <div class="forecast-row" id="forecastRow"></div>
     </div>
   </section>
 
@@ -1639,8 +1688,12 @@
         const url = 'https://api.open-meteo.com/v1/forecast' +
           '?latitude=41.31&longitude=-6.40' +
           '&current=temperature_2m,relative_humidity_2m,weather_code' +
-          '&hourly=precipitation_probability&forecast_days=1&timezone=Europe%2FMadrid';
+          '&hourly=precipitation_probability' +
+          '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+          '&forecast_days=14&timezone=Europe%2FMadrid';
         const data = await fetch(url).then(r => r.json());
+
+        // — Aktuell —
         const cur = data.current;
         const idx = data.hourly.time.indexOf(cur.time);
         const rainProb = idx >= 0 ? data.hourly.precipitation_probability[idx] : 0;
@@ -1651,6 +1704,42 @@
         document.getElementById('wHumid').textContent = Math.round(cur.relative_humidity_2m);
         document.getElementById('wRain').textContent = Math.round(rainProb);
         document.getElementById('wTimestamp').textContent = cur.time.split('T')[1] + ' Ortszeit';
+
+        // — Forecast 11.–18.7. —
+        const DOW = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+        const todayStr = cur.time.split('T')[0];
+        const tripDates = data.daily.time.filter(t => t >= '2026-07-11' && t <= '2026-07-18');
+        const row = document.getElementById('forecastRow');
+        if (!row || !tripDates.length) return;
+
+        row.innerHTML = tripDates.map(date => {
+          const i = data.daily.time.indexOf(date);
+          const d = new Date(date + 'T12:00:00');
+          const dow   = DOW[d.getDay()];
+          const label = parseInt(date.split('-')[2]) + '.7';
+          const icon  = ICONS[wmoInfo(data.daily.weather_code[i]).icon];
+          const tmax  = Math.round(data.daily.temperature_2m_max[i]);
+          const tmin  = Math.round(data.daily.temperature_2m_min[i]);
+          const rain  = Math.round(data.daily.precipitation_probability_max[i]);
+          const isToday  = date === todayStr;
+          const isTripStart = date === '2026-07-11';
+          const classes = ['forecast-day',
+            isToday     ? 'fd-today' : '',
+            isTripStart ? 'fd-trip'  : '',
+          ].filter(Boolean).join(' ');
+          return `<div class="${classes}">
+            ${isTripStart ? '<span class="fd-tag">✈ Abflug</span>' : ''}
+            <span class="fd-dow">${dow}</span>
+            <span class="fd-date">${label}</span>
+            <span class="fd-icon">${icon}</span>
+            <span class="fd-tmax">${tmax}°</span>
+            <span class="fd-tmin">${tmin}°</span>
+            <span class="fd-rain">
+              <svg viewBox="0 0 10 13" fill="currentColor" stroke="none"><path d="M5 0C5 0 0 7 0 9.5a5 5 0 0 0 10 0C10 7 5 0 5 0z"/></svg>
+              ${rain}%
+            </span>
+          </div>`;
+        }).join('');
       } catch (_) {
         const el = document.getElementById('wCondition');
         if (el) el.textContent = 'Nicht verfügbar';
