@@ -994,7 +994,6 @@
     <!-- Countdown -->
     <div class="countdown">
       <div class="countdown-label">
-        <span>Abflug Zürich · 11.07 · 11:05</span>
         <span class="pulse" id="cdStatus">Live</span>
       </div>
       <div class="cd-grid" id="cdGrid">
@@ -1464,12 +1463,15 @@
   /* ============================ COUNTDOWN ============================ */
   // 11 July 2026, 11:05 CEST (UTC+2) → 09:05 UTC
   const TARGET = new Date('2026-07-11T09:05:00Z');
+  let cdTimer;
   function tickCountdown() {
     const now = new Date();
     let diff = Math.max(0, TARGET - now);
     if (diff === 0) {
       $('#cdStatus').textContent = '¡Vamos!';
-      $('#cdD').textContent = $('#cdH').textContent = $('#cdM').textContent = $('#cdS').textContent = '00';
+      const cdGrid = document.getElementById('cdGrid');
+      if (cdGrid) cdGrid.style.display = 'none';
+      clearInterval(cdTimer);
       return;
     }
     const d = Math.floor(diff / 86400000); diff -= d * 86400000;
@@ -1482,7 +1484,7 @@
     $('#cdS').textContent = pad(s);
   }
   tickCountdown();
-  setInterval(tickCountdown, 1000);
+  cdTimer = setInterval(tickCountdown, 1000);
 
   /* ============================ MENU ============================ */
   const menuSheet = $('#menuSheet');
