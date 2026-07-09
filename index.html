@@ -194,7 +194,7 @@
 
     /* ---------- Countdown ---------- */
     .countdown {
-      margin-top: 40px;
+      margin-top: 0;
       padding: 28px 0 8px;
       border-top: 1px solid var(--line);
     }
@@ -962,9 +962,18 @@
         <span class="v">8 Tage · 7 Nächte</span>
       </div>
     </div>
+  </header>
+
+  <!-- =========================== SECTION 01 =========================== -->
+  <section class="section wrap" id="countdown">
+    <div class="sec-head">
+      <span class="sec-num">01 · Partida</span>
+      <h2 class="sec-title">Abflug &amp;<br><em>Wetter.</em></h2>
+      <p class="sec-lede">Abflug Zürich am Sa, 11. Juli um 11:05 — Air Europa UX1676 nach Madrid. Darunter das aktuelle Wetter und der Forecast für alle 8 Reisetage in Fermoselle.</p>
+    </div>
 
     <!-- Countdown -->
-    <div class="countdown" id="countdown">
+    <div class="countdown">
       <div class="countdown-label">
         <span>Abflug Zürich · 11.07 · 11:05</span>
         <span class="pulse" id="cdStatus">Live</span>
@@ -1043,7 +1052,7 @@
       </div>
       <div class="forecast-row" id="forecastRow"></div>
     </div>
-  </header>
+  </section>
 
   <!-- =========================== REISE =========================== -->
   <section class="section wrap" id="reise">
@@ -1112,7 +1121,8 @@
         <span>41.31° N · 6.40° W · 727 m</span>
         <span style="display:flex; gap: 18px; flex-wrap: wrap;">
           <a href="https://fermoselle.es/" target="_blank" rel="noopener">fermoselle.es →</a>
-          <a href="https://www.google.com/maps/dir/Madrid-Barajas+Airport/Fermoselle,+Zamora,+Spain" target="_blank" rel="noopener">Route in Google Maps öffnen →</a>
+          <a href="https://www.google.com/maps/search/Calle+Alto+de+Santa+Colomba+99,+49220+Fermoselle" target="_blank" rel="noopener">Casa Garrido →</a>
+          <a href="https://www.google.com/maps/dir/Madrid-Barajas+Airport/Fermoselle,+Zamora,+Spain" target="_blank" rel="noopener">Route in Google Maps →</a>
         </span>
       </div>
     </div>
@@ -1722,14 +1732,18 @@
           const tmax  = Math.round(data.daily.temperature_2m_max[i]);
           const tmin  = Math.round(data.daily.temperature_2m_min[i]);
           const rain  = Math.round(data.daily.precipitation_probability_max[i]);
-          const isToday  = date === todayStr;
+          const isToday    = date === todayStr;
           const isTripStart = date === '2026-07-11';
+          const isTripEnd   = date === '2026-07-18';
           const classes = ['forecast-day',
-            isToday     ? 'fd-today' : '',
-            isTripStart ? 'fd-trip'  : '',
+            isToday               ? 'fd-today' : '',
+            (isTripStart || isTripEnd) ? 'fd-trip' : '',
           ].filter(Boolean).join(' ');
+          const tag = isTripStart ? '<span class="fd-tag">✈ Hinflug</span>'
+                    : isTripEnd   ? '<span class="fd-tag">✈ Rückflug</span>'
+                    : '';
           return `<div class="${classes}">
-            ${isTripStart ? '<span class="fd-tag">✈ Abflug</span>' : ''}
+            ${tag}
             <span class="fd-dow">${dow}</span>
             <span class="fd-date">${label}</span>
             <span class="fd-icon">${icon}</span>
