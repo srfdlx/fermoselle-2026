@@ -1014,6 +1014,35 @@
         <a class="fc-track" href="https://www.flightaware.com/live/flight/UX1676" target="_blank" rel="noopener">Live verfolgen →</a>
       </div>
     </div>
+
+    <div class="weather-strip" id="weatherStrip">
+      <div class="weather-head">
+        <div class="wc-icon" id="wIcon"></div>
+        <div class="wh-info">
+          <span class="wc-eyebrow">Aktuelles Wetter · Fermoselle</span>
+          <div class="wc-condition" id="wCondition">Laden…</div>
+        </div>
+        <div class="wc-ts" id="wTimestamp"></div>
+      </div>
+      <div class="weather-stats">
+        <div class="weather-cell">
+          <span class="wc-label">Temperatur</span>
+          <span class="wc-val" id="wTemp">—</span>
+          <span class="wc-unit">°C</span>
+        </div>
+        <div class="weather-cell">
+          <span class="wc-label">Luftfeuchtigkeit</span>
+          <span class="wc-val" id="wHumid">—</span>
+          <span class="wc-unit">%</span>
+        </div>
+        <div class="weather-cell">
+          <span class="wc-label">Regenwahrscheinlichkeit</span>
+          <span class="wc-val" id="wRain">—</span>
+          <span class="wc-unit">%</span>
+        </div>
+      </div>
+      <div class="forecast-row" id="forecastRow"></div>
+    </div>
   </header>
 
   <!-- =========================== REISE =========================== -->
@@ -1088,34 +1117,6 @@
       </div>
     </div>
 
-    <div class="weather-strip" id="weatherStrip">
-      <div class="weather-head">
-        <div class="wc-icon" id="wIcon"></div>
-        <div class="wh-info">
-          <span class="wc-eyebrow">Aktuelles Wetter · Fermoselle</span>
-          <div class="wc-condition" id="wCondition">Laden…</div>
-        </div>
-        <div class="wc-ts" id="wTimestamp"></div>
-      </div>
-      <div class="weather-stats">
-        <div class="weather-cell">
-          <span class="wc-label">Temperatur</span>
-          <span class="wc-val" id="wTemp">—</span>
-          <span class="wc-unit">°C</span>
-        </div>
-        <div class="weather-cell">
-          <span class="wc-label">Luftfeuchtigkeit</span>
-          <span class="wc-val" id="wHumid">—</span>
-          <span class="wc-unit">%</span>
-        </div>
-        <div class="weather-cell">
-          <span class="wc-label">Regenwahrscheinlichkeit</span>
-          <span class="wc-val" id="wRain">—</span>
-          <span class="wc-unit">%</span>
-        </div>
-      </div>
-      <div class="forecast-row" id="forecastRow"></div>
-    </div>
   </section>
 
   <!-- =========================== ITINERARY =========================== -->
